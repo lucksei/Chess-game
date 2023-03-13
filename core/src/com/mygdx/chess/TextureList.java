@@ -36,11 +36,10 @@ public class TextureList {
     }
     public void dispose (Key key) {
         textureMap.get(key).dispose();
-        textureMap.remove(key);
     }
     public void disposeAll () {
         for (Key key  : textureMap.keySet()) {
-            dispose(key);
+            this.dispose(key);
         }
     }
 }

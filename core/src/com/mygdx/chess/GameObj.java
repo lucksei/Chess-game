@@ -1,5 +1,6 @@
 package com.mygdx.chess;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -31,7 +32,7 @@ public class GameObj {
     }
 
     public void update () {
-        rect.setPosition(x*SQUARE_SIZE,y*SQUARE_SIZE); // keeps the rect updated...
+        // override this function
     }
 
     public int getX () {return x;}
@@ -39,6 +40,16 @@ public class GameObj {
     public void setX (int x) {this.x = x;}
     public void setY (int y) {this.y = y;}
 
-    public Rectangle getRect() {return rect;}
+    public Rectangle getRect() {
+        rect.setPosition(x*SQUARE_SIZE,y*SQUARE_SIZE); // Updates position first
+        return rect;
+    }
+
+    public boolean isClicked() {
+        if(Gdx.input.justTouched() && getRect().contains(game.mousePos.x,game.mousePos.y)) {
+            return true;
+        }
+        return false;
+    }
 
 }
