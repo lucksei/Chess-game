@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import static com.mygdx.chess.ChessPiece.PieceType;
+import static com.mygdx.chess.ChessPiece.Type;
 
 public class Chess extends ApplicationAdapter {
 
@@ -33,9 +33,9 @@ public class Chess extends ApplicationAdapter {
 		textureList = new TextureList();
 
 		chessScene = new ChessScene(this);
-		chessScene.createChessPiece(PieceType.KING, 1, 2);
-		chessScene.createChessPiece(PieceType.PAWN, 3, 4);
-		chessScene.createChessPiece(PieceType.BISHOP, 2,1);
+		chessScene.createChessPiece(Type.KING, 1, 2);
+		chessScene.createChessPiece(Type.PAWN, 3, 4);
+		chessScene.createChessPiece(Type.BISHOP, 2,1);
 	}
 
 	@Override

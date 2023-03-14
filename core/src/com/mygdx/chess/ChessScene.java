@@ -29,13 +29,15 @@ public class ChessScene {
         objectsToRemove.addAll(findObjects(this.objects, tag));
     }
 
-    public Array<GameObj> findObjects (Array<GameObj> objects, int x, int y) {
+    public Array<ChessPiece> getChessPieces () {
         Array<GameObj> objectsCopy = new Array<>(objects); // like using temp.addAll(objects);
-        Array<GameObj> objectsFound = new Array<>();
+        Array<ChessPiece> chessPieces = new Array<>();
+
         for (GameObj object : objectsCopy) {
-            if(object.getX() == x && object.getY() == y) objectsFound.add(object);
+            if (object instanceof ChessPiece) chessPieces.add((ChessPiece) object);
         }
-        return objectsFound;
+
+        return chessPieces;
     }
 
     /* very inefficient CPU wise, use it as little as possible.
@@ -51,11 +53,7 @@ public class ChessScene {
         return objectsTagged;
     }
 
-    public Array<GameObj> getObjects (int x, int y) {
-        return findObjects(this.objects, x, y);
-    }
-
-    public void createChessPiece (ChessPiece.PieceType type, int x, int y) {
+    public void createChessPiece (ChessPiece.Type type, int x, int y) {
         ChessPiece chessPiece = new ChessPiece(game, type, x, y);
         addObject(chessPiece);
     }
