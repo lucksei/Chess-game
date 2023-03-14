@@ -1,5 +1,9 @@
 package com.mygdx.chess;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.utils.Array;
+
 public class ChessPiece extends GameObj {
 
     public enum PieceType { BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK }
@@ -42,10 +46,14 @@ public class ChessPiece extends GameObj {
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
             game.chessScene.removeObject("moveIndicator");
             // create indicators (where ChessScene lets me) to move the piece
-            game.chessScene.createMoveIndicator(this,this.getX()+1,this.getY());
-            game.chessScene.createMoveIndicator(this,this.getX()-1,this.getY());
             game.chessScene.createMoveIndicator(this,this.getX(),this.getY()+1);
-            game.chessScene.createMoveIndicator(this,this.getX(),this.getY()-1);
+            if (!game.chessScene.getObjects(this.getX()+1,this.getY()+1).isEmpty()) {
+                game.chessScene.createMoveIndicator(this,this.getX()+1,this.getY()+1);
+            }
+            if (!game.chessScene.getObjects(this.getX()-1,this.getY()+1).isEmpty()) {
+                game.chessScene.createMoveIndicator(this,this.getX()-1,this.getY()+1);
+            }
+
             // if the piece deactivates for some reason it should remove its indicators
         }
     }

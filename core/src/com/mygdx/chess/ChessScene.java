@@ -26,21 +26,33 @@ public class ChessScene {
         objectsToRemove.add(object);
     }
     public void removeObject (String tag) {
-        objectsToRemove.addAll(searchTag(tag));
+        objectsToRemove.addAll(findObjects(this.objects, tag));
+    }
+
+    public Array<GameObj> findObjects (Array<GameObj> objects, int x, int y) {
+        Array<GameObj> objectsCopy = new Array<>(objects); // like using temp.addAll(objects);
+        Array<GameObj> objectsFound = new Array<>();
+        for (GameObj object : objectsCopy) {
+            if(object.getX() == x && object.getY() == y) objectsFound.add(object);
+        }
+        return objectsFound;
     }
 
     /* very inefficient CPU wise, use it as little as possible.
     It requires a copy of the original since this is usually called in update,
     and since i cant nest iterators, i have to iterate on top of a new array,
     cloning this takes a lot of memory so in paper is pretty intensive */
-    public Array<GameObj> searchTag (String tag) {
+    public Array<GameObj> findObjects (Array<GameObj> objects, String tag) {
         Array<GameObj> objectsCopy = new Array<>(objects); // like using temp.addAll(objects);
         Array<GameObj> objectsTagged = new Array<>();
         for (GameObj object : objectsCopy) {
             if(object.getTag() == tag) objectsTagged.add(object);
         }
         return objectsTagged;
+    }
 
+    public Array<GameObj> getObjects (int x, int y) {
+        return findObjects(this.objects, x, y);
     }
 
     public void createChessPiece (ChessPiece.PieceType type, int x, int y) {
