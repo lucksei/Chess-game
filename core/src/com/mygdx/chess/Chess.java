@@ -55,7 +55,7 @@ public class Chess extends ApplicationAdapter {
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));
 		batch.begin();
-		batch.draw(textureList.get(TextureList.Key.BOARD),0,0);
+		batch.draw(textureList.get(TextureList.Key.BOARD),0,0); // TODO move to ChessScene later
 		chessScene.render();
 		batch.end();
 
