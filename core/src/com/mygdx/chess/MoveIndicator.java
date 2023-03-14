@@ -1,6 +1,6 @@
 package com.mygdx.chess;
 
-public class MoveIndicator extends GameObj {
+public class MoveIndicator extends Entity {
 
     ChessPiece chessPiece;
 
@@ -15,7 +15,7 @@ public class MoveIndicator extends GameObj {
     public void update () {
         if(isClicked()) {
             game.chessScene.movePiece(chessPiece, getX(), getY());
-            game.chessScene.removeObject("moveIndicator");
+            game.chessScene.removeEntity("moveIndicator");
         }
     }
 }

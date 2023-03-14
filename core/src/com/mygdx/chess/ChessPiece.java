@@ -1,14 +1,12 @@
 package com.mygdx.chess;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChessPiece extends GameObj implements MovementStrategy {
+public class ChessPiece extends Entity implements MovementStrategy {
 
     public enum Type { BISHOP, BISHOP1, KING, KING1, KNIGHT, KNIGHT1, PAWN, PAWN1, QUEEN, QUEEN1, ROOK, ROOK1 }
     public enum Player { WHITE, BLACK }
@@ -103,37 +101,36 @@ so its done only once */
         return chessPiecesInSquare;
     }
 
-    public Array<Vector2> movementStrategy (int currentX, int currentY) {
-        Array<Vector2> legalMove = new Array<>();
+    public Array<Square> movementStrategy (int currentX, int currentY) {
+        Array<Entity> entities = game.chessScene.getEntitiesCopy();
 
-        Map<String, Vector2> moves = new HashMap<>();
-        moves.put("move1", new Vector2(currentX,currentY+1));
-        moves.put("move2", new Vector2(currentX+1,currentY+1));
-        moves.put("move3", new Vector2(currentX-1,currentY+1));
-        moves.put("move4", new Vector2(currentX,currentY+2));
-
-        Array<ChessPiece> chessPieces = game.chessScene.getChessPieces();
+        Map<String, Square> moves = new HashMap<>();
+        moves.put("moveup", new Square(entities,currentX,currentY,0,1));
+        moves.put("moveupup", new Square(entities,currentX,currentY,0,2));
+        moves.put("moveupleft", new Square(entities,currentX,currentY,-1,1));
+        moves.put("moveupright", new Square(entities,currentX,currentY,1,1));
 
         // Piece logic here
-        if(getPieceFromSquare(chessPieces, moves.get("move1")).isEmpty()) { // is the next square empty?
-            legalMove.add(moves.get("move1"));
+        Array<Square> legalMove = new Array<>();
 
-            if(this.getY() == 1 && getPieceFromSquare(chessPieces, moves.get("move4")).isEmpty() || getPlayer(getPieceFromSquare(chessPieces, moves.get("move4"))) == Player.BLACK) { //is this pawn at Y=3 and 2 squares ahead is empty or is there a black piece?
-                legalMove.add(moves.get("move4"));
+        if(moves.get("moveup").isEmpty()) { // is the next square empty?
+            legalMove.add(moves.get("moveup"));
 
-            } else if (getPlayer(getPieceFromSquare(chessPieces, moves.get("move1"))) == Player.BLACK) { // is the next square a black piece?
-                legalMove.add(moves.get("move1"));
+            if(this.getY() == 1 && moves.get("moveupup").isEmpty() || moves.get("moveupup").isChessPieceBlack()) { //is this pawn at Y=3 and 2 squares ahead is empty or is there a black piece?
+                legalMove.add(moves.get("moveupup"));
+
+            } else if (moves.get("moveup").isChessPieceBlack()) { // is the next square a black piece?
+                legalMove.add(moves.get("moveup"));
             }
         }
 
-        if (getPlayer(getPieceFromSquare(chessPieces, moves.get("move2"))) == Player.BLACK) {
-            legalMove.add(moves.get("move2"));
+        if (moves.get("moveupleft").isChessPieceBlack()) {
+            legalMove.add(moves.get("moveupleft"));
         }
-        if (getPlayer(getPieceFromSquare(chessPieces, moves.get("move3"))) == Player.BLACK) {
-            legalMove.add(moves.get("move3"));
+        if (moves.get("moveupright").isChessPieceBlack()) {
+            legalMove.add(moves.get("moveupright"));
         }
-
-        return legalMove;
+        return legalMove; //this might make the entities null in the squares so might trow error
     }
 
 
@@ -143,11 +140,10 @@ so its done only once */
         if(isClicked()) {
             // activate so to speak, now this ChessPiece is the "active" one on the board, tell that to ChessScene
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
-            game.chessScene.removeObject("moveIndicator");
+            game.chessScene.removeEntity("moveIndicator");
             // create indicators (where ChessScene lets me) to move the piece
-            Array<Vector2> legalMoves = new Array<Vector2>(movementStrategy(this.getX(),this.getY()));
-            for (Vector2 legalMove : legalMoves) {
-                game.chessScene.createMoveIndicator(this, (int)legalMove.x, (int)legalMove.y);
+            for (Square legalMove : new Array<Square>(movementStrategy(this.getX(),this.getY()))) {
+                game.chessScene.createMoveIndicator(this, legalMove.x, legalMove.y);
             }
 
 

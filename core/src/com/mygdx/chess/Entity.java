@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-public class GameObj {
+public class Entity {
 
     static final int SQUARE_SIZE = 42; //pixels
 
@@ -16,7 +16,7 @@ public class GameObj {
     private int x, y;
     private boolean isClickeable;
 
-    public GameObj (Chess game, int x, int y) {
+    public Entity(Chess game, int x, int y) {
         this.game = game;
         this.tag = null;
         this.x = x;

@@ -8,46 +8,40 @@ public class ChessScene {
 
 //    private boolean isChessPieceActive;
 //    private ChessPiece activeChessPiece;
-    private Array<GameObj> objects;
-    private Array<GameObj> objectsToRemove;
+    private Array<Entity> entities;
+    private Array<Entity> entitiesToRemove;
     public ChessScene (Chess game) {
         this.game = game;
 //        this.isChessPieceActive = false;
 //        this.activeChessPiece = null;
-        objects = new Array<>();
-        objectsToRemove = new Array<>();
+        entities = new Array<>();
+        entitiesToRemove = new Array<>();
     }
 
-    private void addObject (GameObj object) {
-        objects.add(object);
+    private void addEntity (Entity entity) {
+        entities.add(entity);
     }
 
-    public void removeObject (GameObj object) {
-        objectsToRemove.add(object);
+    public void removeEntity(Entity entity) {
+        entitiesToRemove.add(entity);
     }
-    public void removeObject (String tag) {
-        objectsToRemove.addAll(findObjects(this.objects, tag));
+    public void removeEntity (String tag) {
+        entitiesToRemove.addAll(findEntities(this.entities, tag));
     }
 
-    public Array<ChessPiece> getChessPieces () {
-        Array<GameObj> objectsCopy = new Array<>(objects); // like using temp.addAll(objects);
-        Array<ChessPiece> chessPieces = new Array<>();
-
-        for (GameObj object : objectsCopy) {
-            if (object instanceof ChessPiece) chessPieces.add((ChessPiece) object);
-        }
-
-        return chessPieces;
+    public Array<Entity> getEntitiesCopy () {
+        Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
+        return entitiesCopy;
     }
 
     /* very inefficient CPU wise, use it as little as possible.
     It requires a copy of the original since this is usually called in update,
     and since i cant nest iterators, i have to iterate on top of a new array,
     cloning this takes a lot of memory so in paper is pretty intensive */
-    public Array<GameObj> findObjects (Array<GameObj> objects, String tag) {
-        Array<GameObj> objectsCopy = new Array<>(objects); // like using temp.addAll(objects);
-        Array<GameObj> objectsTagged = new Array<>();
-        for (GameObj object : objectsCopy) {
+    public Array<Entity> findEntities (Array<Entity> entities, String tag) {
+        Array<Entity> objectsCopy = new Array<>(entities); // like using temp.addAll(entities);
+        Array<Entity> objectsTagged = new Array<>();
+        for (Entity object : objectsCopy) {
             if(object.getTag() == tag) objectsTagged.add(object);
         }
         return objectsTagged;
@@ -55,31 +49,31 @@ public class ChessScene {
 
     public void createChessPiece (ChessPiece.Type type, int x, int y) {
         ChessPiece chessPiece = new ChessPiece(game, type, x, y);
-        addObject(chessPiece);
+        addEntity(chessPiece);
     }
 
     public void createMoveIndicator (ChessPiece chessPiece, int x, int y) {
         MoveIndicator moveIndicator = new MoveIndicator (game, chessPiece, x, y);
-        addObject(moveIndicator);
+        addEntity(moveIndicator);
     }
 
     public void render () {
-        for (GameObj object : objects) {
-            object.render();
+        for (Entity entity : entities) {
+            entity.render();
         }
     }
 
     public void update () {
-        for (GameObj object : objects) {
-            object.update();
+        for (Entity entity : entities) {
+            entity.update();
         }
-        for (GameObj object : objectsToRemove) {
-            objects.removeValue(object,true);
+        for (Entity entity : entitiesToRemove) {
+            entities.removeValue(entity,true);
         }
-        objectsToRemove.clear();
+        entitiesToRemove.clear();
     }
 
-    public void movePiece(GameObj obj, int x, int y) {
-        obj.setX(x); obj.setY(y);
+    public void movePiece(Entity entity, int x, int y) {
+        entity.setX(x); entity.setY(y);
     }
 }
