@@ -33,9 +33,11 @@ public class Chess extends ApplicationAdapter {
 		textureList = new TextureList();
 
 		chessScene = new ChessScene(this);
-		chessScene.createChessPiece(Type.KING, 1, 2);
+		chessScene.createChessPiece(Type.PAWN, 1, 2);
 		chessScene.createChessPiece(Type.PAWN, 3, 4);
-		chessScene.createChessPiece(Type.BISHOP, 2,1);
+		chessScene.createChessPiece(Type.PAWN, 2,1);
+		chessScene.createChessPiece(Type.PAWN, 3,1);
+		chessScene.createChessPiece(Type.BISHOP1, 2,2);
 	}
 
 	@Override

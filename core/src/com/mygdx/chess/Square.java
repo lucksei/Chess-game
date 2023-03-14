@@ -37,11 +37,14 @@ public class Square {
     public boolean isEmpty(){
         return getChessPieces().isEmpty();
     }
+    public ChessPiece getChessPiece () {
+        if(!getChessPieces().isEmpty()) return getChessPieces().first();
+        else return null;
+    }
+
     private boolean isChessPieceColor (ChessPiece.Player color) {
-        for (ChessPiece chessPiece : this.getChessPieces()) {
-            if(chessPiece.getPlayer() == color) return true;
-        }
-        return false;
+        if(!this.isEmpty() && this.getChessPiece().getPlayer() == color) return true;
+        else return false;
     }
     public boolean isChessPieceWhite () { return isChessPieceColor(ChessPiece.Player.WHITE); }
     public boolean isChessPieceBlack () { return isChessPieceColor(ChessPiece.Player.BLACK); }

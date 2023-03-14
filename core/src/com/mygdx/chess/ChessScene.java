@@ -26,7 +26,11 @@ public class ChessScene {
         entitiesToRemove.add(entity);
     }
     public void removeEntity (String tag) {
-        entitiesToRemove.addAll(findEntities(this.entities, tag));
+        entitiesToRemove.addAll(findEntities(tag));
+    }
+
+    public <T extends Entity> void removeEntity (Class<T> type) {
+        entitiesToRemove.addAll(findEntities(type));
     }
 
     public Array<Entity> getEntitiesCopy () {
@@ -38,13 +42,22 @@ public class ChessScene {
     It requires a copy of the original since this is usually called in update,
     and since i cant nest iterators, i have to iterate on top of a new array,
     cloning this takes a lot of memory so in paper is pretty intensive */
-    public Array<Entity> findEntities (Array<Entity> entities, String tag) {
-        Array<Entity> objectsCopy = new Array<>(entities); // like using temp.addAll(entities);
-        Array<Entity> objectsTagged = new Array<>();
-        for (Entity object : objectsCopy) {
-            if(object.getTag() == tag) objectsTagged.add(object);
+    public Array<Entity> findEntities (String tag) {
+        Array<Entity> entitiesFound = new Array<>();
+        for (Entity entity : this.getEntitiesCopy()) {
+            if(entity.getTag() == tag) entitiesFound.add(entity);
         }
-        return objectsTagged;
+        return entitiesFound;
+    }
+
+    public <T extends Entity> Array<T> findEntities (Class<T> type) {
+        Array<T> entitiesOfTypeFound = new Array<>();
+        for (Entity entity : this.getEntitiesCopy()) {
+            if(type.isInstance(entity)) {
+                entitiesOfTypeFound.add(type.cast(entity));
+            }
+        }
+        return entitiesOfTypeFound;
     }
 
     public void createChessPiece (ChessPiece.Type type, int x, int y) {

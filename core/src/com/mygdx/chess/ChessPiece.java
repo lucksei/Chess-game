@@ -101,14 +101,14 @@ so its done only once */
         return chessPiecesInSquare;
     }
 
-    public Array<Square> movementStrategy (int currentX, int currentY) {
+    public Array<Square> movementStrategy () {
         Array<Entity> entities = game.chessScene.getEntitiesCopy();
 
         Map<String, Square> moves = new HashMap<>();
-        moves.put("moveup", new Square(entities,currentX,currentY,0,1));
-        moves.put("moveupup", new Square(entities,currentX,currentY,0,2));
-        moves.put("moveupleft", new Square(entities,currentX,currentY,-1,1));
-        moves.put("moveupright", new Square(entities,currentX,currentY,1,1));
+        moves.put("moveup", new Square(entities,this.getX(),this.getY(),0,1));
+        moves.put("moveupup", new Square(entities,this.getX(),this.getY(),0,2));
+        moves.put("moveupleft", new Square(entities,this.getX(),this.getY(),-1,1));
+        moves.put("moveupright", new Square(entities,this.getX(),this.getY(),1,1));
 
         // Piece logic here
         Array<Square> legalMove = new Array<>();
@@ -142,18 +142,9 @@ so its done only once */
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
             game.chessScene.removeEntity("moveIndicator");
             // create indicators (where ChessScene lets me) to move the piece
-            for (Square legalMove : new Array<Square>(movementStrategy(this.getX(),this.getY()))) {
+            for (Square legalMove : new Array<Square>(movementStrategy())) {
                 game.chessScene.createMoveIndicator(this, legalMove.x, legalMove.y);
             }
-
-
-/*            game.chessScene.createMoveIndicator(this,this.getX(),this.getY()+1);
-            if (!game.chessScene.getObjects(this.getX()+1,this.getY()+1).isEmpty()) {
-                game.chessScene.createMoveIndicator(this,this.getX()+1,this.getY()+1);
-            }
-            if (!game.chessScene.getObjects(this.getX()-1,this.getY()+1).isEmpty()) {
-                game.chessScene.createMoveIndicator(this,this.getX()-1,this.getY()+1);
-            }*/
 
             // if the piece deactivates for some reason it should remove its indicators
         }

@@ -14,8 +14,13 @@ public class MoveIndicator extends Entity {
     @Override
     public void update () {
         if(isClicked()) {
+            Square currentSquare = new Square(game.chessScene.getEntitiesCopy(), this.getX(), this.getY(), 0, 0);
+            if(!currentSquare.isEmpty() ) {
+                game.chessScene.removeEntity(currentSquare.getChessPiece());
+            }
+
             game.chessScene.movePiece(chessPiece, getX(), getY());
-            game.chessScene.removeEntity("moveIndicator");
+            game.chessScene.removeEntity(MoveIndicator.class);
         }
     }
 }
