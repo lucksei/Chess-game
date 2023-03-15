@@ -1,21 +1,31 @@
 package com.mygdx.chess;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
-public class ChessScene {
+public class SceneEntities {
 
-    private final Chess game;
-
-//    private boolean isChessPieceActive;
-//    private ChessPiece activeChessPiece;
     private Array<Entity> entities;
     private Array<Entity> entitiesToRemove;
-    public ChessScene (Chess game) {
+
+    private Chess game;
+    public InputHandler inputHandler;
+    public SpriteBatch batch;
+    public TextureList textureList;
+
+    ChessBoard chessBoard;
+
+    public SceneEntities (Chess game) {
         this.game = game;
-//        this.isChessPieceActive = false;
-//        this.activeChessPiece = null;
+        this.inputHandler = game.inputHandler;
+        this.batch = game.batch;
+        this.textureList = game.textureList;
+
         entities = new Array<>();
         entitiesToRemove = new Array<>();
+
+        this.chessBoard = new ChessBoard(this);
+        addEntity(chessBoard);
     }
 
     public void render () {
@@ -23,7 +33,6 @@ public class ChessScene {
             entity.render();
         }
     }
-
     public void update () {
         for (Entity entity : entities) {
             entity.update();
@@ -34,30 +43,16 @@ public class ChessScene {
         entitiesToRemove.clear();
     }
 
-    public void addEntity (Entity entity) {
-        entities.add(entity);
-    }
-
+    private void addEntity (Entity entity) { entities.add(entity); }
     public void removeEntity(Entity entity) {
         entitiesToRemove.add(entity);
     }
     public void removeEntity (String tag) {
         entitiesToRemove.addAll(findEntities(tag));
     }
-
     public <T extends Entity> void removeEntity (Class<T> type) {
         entitiesToRemove.addAll(findEntities(type));
     }
-
-    public Array<Entity> getEntitiesCopy () {
-        Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
-        return entitiesCopy;
-    }
-
-    /* very inefficient CPU wise, use it as little as possible.
-    It requires a copy of the original since this is usually called in update,
-    and since i cant nest iterators, i have to iterate on top of a new array,
-    cloning this takes a lot of memory so in paper is pretty intensive */
     public Array<Entity> findEntities (String tag) {
         Array<Entity> entitiesFound = new Array<>();
         for (Entity entity : this.getEntitiesCopy()) {
@@ -65,7 +60,6 @@ public class ChessScene {
         }
         return entitiesFound;
     }
-
     public <T extends Entity> Array<T> findEntities (Class<T> type) {
         Array<T> entitiesOfTypeFound = new Array<>();
         for (Entity entity : this.getEntitiesCopy()) {
@@ -75,18 +69,30 @@ public class ChessScene {
         }
         return entitiesOfTypeFound;
     }
-
-    public void createChessPiece (ChessPiece.Type type, int x, int y) {
-        ChessPiece chessPiece = new ChessPiece(game, type, x, y);
+    public Array<Entity> getEntitiesCopy () {
+        Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
+        return entitiesCopy;
+    }
+    public void createChessBoard() {
+        ChessBoard chessBoard = new ChessBoard(this);
+        addEntity(chessBoard);
+    }
+    public void createChessPiece (ChessPiece.Type type, int gridX, int gridY) {
+        ChessPiece chessPiece = new ChessPiece(this, gridX, gridY, type);
         addEntity(chessPiece);
     }
-
-    public void createMoveIndicator (ChessPiece chessPiece, int x, int y) {
-        MoveIndicator moveIndicator = new MoveIndicator (game, chessPiece, x, y);
+    public void createMoveIndicator (ChessPiece parent, int gridX, int gridY) {
+        MoveIndicator moveIndicator = new MoveIndicator(this, gridX, gridY, parent);
         addEntity(moveIndicator);
     }
+    public void createSquare () {
 
-    public void movePiece(Entity entity, int x, int y) {
-        entity.setX(x); entity.setY(y);
     }
+
+    public void movePiece(BoardEntity boardEntity, int gridX, int gridY) {
+        boardEntity.setGridX(gridX);
+        boardEntity.setGridY(gridY);
+    }
+
+
 }

@@ -1,26 +1,29 @@
 package com.mygdx.chess;
 
-public class MoveIndicator extends Entity {
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-    ChessPiece chessPiece;
+public class MoveIndicator extends BoardEntity {
 
-    public MoveIndicator(Chess game, ChessPiece chessPiece, int x, int y) {
-        super(game, x, y);
+    ChessPiece parent;
+
+    public MoveIndicator(SceneEntities sceneEntities, int gridX, int gridY, ChessPiece parent) {
+        super(sceneEntities, gridX, gridY);
         setTag("moveIndicator");
         setClickeable(true);
-        this.chessPiece = chessPiece;
-        setTexture(game.textureList.get(TextureList.Key.INDICATOR));
+        this.parent = parent;
+        setTexture(sceneEntities.textureList.get(TextureList.Key.INDICATOR));
     }
     @Override
     public void update () {
+        super.update();
         if(isClicked()) {
-            Square currentSquare = new Square(game.chessScene.getEntitiesCopy(), this.getX(), this.getY(), 0, 0);
+            Square currentSquare = new Square(sceneEntities.getEntitiesCopy(), this.getX(), this.getY(), 0, 0);
             if(!currentSquare.isEmpty() ) {
-                game.chessScene.removeEntity(currentSquare.getChessPiece());
+                sceneEntities.removeEntity(currentSquare.getChessPiece());
             }
 
-            game.chessScene.movePiece(chessPiece, getX(), getY());
-            game.chessScene.removeEntity(MoveIndicator.class);
+            sceneEntities.movePiece(parent, getX(), getY());
+            sceneEntities.removeEntity(MoveIndicator.class);
         }
     }
 }

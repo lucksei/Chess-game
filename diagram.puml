@@ -1,0 +1,65 @@
+@startuml
+
+Class Entity {
+- SceneEntities sceneEntities
+- InputHandler inputHandler
+- SpriteBatch batch
+
+- int x,y,w,h
+- Rectangle rect
+- Texture texture
+- String tag
+- boolean isClickeable
+- boolean isDraggeable
+------------------------
++ render()
++ update()
++ set...
++ get...
++ isClicked()
++ isDragged()
+}
+
+Class BoardEntity {
+- ChessBoard ChessBoard
+- static int SQUARE_SIZE
+- gridX
+- gridY
+------------------------
++ @Override update()
++ set...
++ get...
+
+}
+
+Class ChessPiece {
+
+}
+
+Class MoveIndicator {
+
+}
+Class Square {
+
+}
+
+CLass UIEntity {
+
+}
+
+Class ChessBoard {
+
+}
+
+Class SceneEntities{
+ Array<Entity> entities
+}
+
+    ChessPiece --> BoardEntity
+    MoveIndicator --> BoardEntity
+    Square --> BoardEntity
+  BoardEntity --> Entity
+  UIEntity --> Entity
+  ChessBoard --> Entity
+
+@enduml

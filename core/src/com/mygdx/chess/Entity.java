@@ -2,64 +2,69 @@ package com.mygdx.chess;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Entity {
 
-    static int SQUARE_SIZE = 42; //pixels
+    public SceneEntities sceneEntities;
 
-    Chess game;
-    private Texture myTexture;
+    private int x, y, w, h;
     private Rectangle rect = new Rectangle();
-    private String tag;
-    private int x, y;
-    private boolean isClickeable;
+    private Texture texture;
 
-    public Entity(Chess game, int x, int y) {
-        this.game = game;
+    private String tag;
+    private boolean isClickeable;
+    private boolean isDraggeable;
+
+    public Entity(SceneEntities sceneEntities) {
+        this.sceneEntities = sceneEntities;
+        this.x = 0;
+        this.y = 0;
+        this.w = 0;
+        this.h = 0;
         this.tag = null;
-        this.x = x;
-        this.y = y;
         this.isClickeable = false;
-        this.setRect();
-        this.setTexture(game.textureList.get(TextureList.Key.ERR));
+        this.isDraggeable = false;
+        this.rect = new Rectangle();
+        this.texture = sceneEntities.textureList.get(TextureList.Key.ERR);
     }
 
     public void render () {
-        game.batch.draw(myTexture,x*SQUARE_SIZE,y*SQUARE_SIZE);
+        sceneEntities.batch.draw(this.texture,this.x,this.y);
     }
-
     public void update () {} // override this function
-
-    public void setTag (String tag) { this.tag = tag; }
-
-    public String getTag () { return tag; }
-
-    public void setTexture (Texture texture) {
-        myTexture = texture;
-    }
-    public Texture getTexture () { return myTexture; }
-
-    public int getX () { return x; }
-    public int getY () { return y; }
-    public void setX (int x) { this.x = x; }
-    public void setY (int y) { this.y = y; }
-
-    public void setRect () {
-        rect.set(x*SQUARE_SIZE,y*SQUARE_SIZE,SQUARE_SIZE,SQUARE_SIZE);
-    }
-    public Rectangle getRect () {
-//        setRect();
-        return rect;
-    }
-
-    public void setClickeable(boolean clickeable) { this.isClickeable = clickeable; }
     public boolean isClicked () {
         this.setRect(); //updates where the rect is
-        if(this.isClickeable && Gdx.input.justTouched() && this.getRect().contains(game.mousePos.x,game.mousePos.y)) {
+        if(this.isClickeable && Gdx.input.justTouched() && this.getRect().contains(sceneEntities.inputHandler.getMousePos().x,sceneEntities.inputHandler.getMousePos().y)) {
             return true;
         }
         return false;
     }
+
+    // get and set methods
+    public String getTag () { return this.tag; }
+    public void setTag (String tag) { this.tag = tag; }
+    public Texture getTexture () { return texture; }
+    public void setTexture (Texture texture) {
+        this.texture = texture;
+    }
+    public int getX () { return this.x; }
+    public void setX (int x) { this.x = x; }
+    public int getY () { return this.y; }
+    public void setY (int y) { this.y = y; }
+    public int getW () { return this.w; }
+    public void setW (int x) { this.w = w; }
+    public int getH () { return this.h; }
+    public void setH (int y) { this.h = h; }
+    public Rectangle getRect () {
+        return this.rect;
+    }
+    public void setRect () {
+        this.rect.set(this.x,this.y,this.w,this.h);
+    }
+    public void setClickeable(boolean clickeable) { this.isClickeable = clickeable; }
+    public void setDraggeable(boolean draggeable) { this.isDraggeable = draggeable; }
+
 
 }

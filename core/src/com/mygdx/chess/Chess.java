@@ -18,50 +18,47 @@ public class Chess extends ApplicationAdapter {
 	static final int WORLD_HEIGHT = SQUARE_SIZE*8;
 
 	public OrthographicCamera camera;
-	public Vector3 mousePos;
 	public SpriteBatch batch;
 	public TextureList textureList;
-	public ChessScene chessScene;
+	public InputHandler inputHandler;
+	public SceneEntities sceneEntities;
 	
 	@Override
 	public void create () {
 
 		camera = new OrthographicCamera(WORLD_WIDTH,WORLD_HEIGHT);
 		camera.position.set(WORLD_WIDTH/2,WORLD_HEIGHT/2,0);
-		mousePos = new Vector3(); // TODO goes in an input handler thingy
+		inputHandler = new InputHandler();
 
 		batch = new SpriteBatch();
 		textureList = new TextureList();
 
-		chessScene = new ChessScene(this);
-		chessScene.createChessPiece(Type.PAWN, 1, 2);
-		chessScene.createChessPiece(Type.PAWN, 3, 4);
-		chessScene.createChessPiece(Type.PAWN, 2,1);
-		chessScene.createChessPiece(Type.PAWN, 3,1);
-		chessScene.createChessPiece(Type.BISHOP1, 2,2);
-		chessScene.addEntity(new UIEntity(this,100,100, 42, 42));
-		chessScene.addEntity(new UIEntity(this,100,200, 42, 42));
+		sceneEntities = new SceneEntities(this);
+
+		sceneEntities.createChessPiece(Type.PAWN, 1, 2);
+		sceneEntities.createChessPiece(Type.PAWN, 3, 4);
+		sceneEntities.createChessPiece(Type.PAWN, 2,1);
+		sceneEntities.createChessPiece(Type.PAWN, 3,1);
+		sceneEntities.createChessPiece(Type.BISHOP1, 2,2);
+		sceneEntities.createMoveIndicator(null, 6, 6);
+//		chessScene.addEntity(new UIEntity(this,100,100, 42, 42));
+//		chessScene.addEntity(new UIEntity(this,100,200, 42, 42));
 	}
 
 	@Override
 	public void render () {
 		// handle logic stuff
-		// TODO handle input
-		chessScene.update();
-
-		// handle camera
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
-		// handle mouse TODO move this to an input handler of some sort / observer pattern
-		mousePos.set(Gdx.input.getX(),Gdx.input.getY(), 0f);
-		camera.unproject(mousePos);
+		inputHandler.update(camera);
+		sceneEntities.update();
 
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));
 		batch.begin();
 		batch.draw(textureList.get(TextureList.Key.BOARD),0,0); // TODO move to ChessScene later
-		chessScene.render();
+		sceneEntities.render();
 		batch.end();
 
 
