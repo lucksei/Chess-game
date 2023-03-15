@@ -83,9 +83,9 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
             sceneEntities.removeEntity("moveIndicator");
             // create indicators (where ChessScene lets me) to move the piece
-//            for (Square legalMove : new Array<Square>(movementStrategy())) {
-//                sceneEntities.createMoveIndicator(this, legalMove.x, legalMove.y);
-//            }
+            for (Square legalMove : new Array<Square>(movementStrategy())) {
+                sceneEntities.createMoveIndicator(this, legalMove.getGridX(), legalMove.getGridY());
+            }
 
             // if the piece deactivates for some reason it should remove its indicators
         }
@@ -99,14 +99,14 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         return this.player;
     }
 
+    // TODO muy tosco, arreglar
     public Array<Square> movementStrategy () {
-        Array<Entity> entities = sceneEntities.getEntitiesCopy();
 
         Map<String, Square> moves = new HashMap<>();
-        moves.put("moveup", new Square(entities,this.getX(),this.getY(),0,1));
-        moves.put("moveupup", new Square(entities,this.getX(),this.getY(),0,2));
-        moves.put("moveupleft", new Square(entities,this.getX(),this.getY(),-1,1));
-        moves.put("moveupright", new Square(entities,this.getX(),this.getY(),1,1));
+        moves.put("moveup", sceneEntities.createSquare(this.getGridX(),this.getGridY()+1));
+        moves.put("moveupup", sceneEntities.createSquare(this.getGridX(),this.getGridY()+2));
+        moves.put("moveupleft", sceneEntities.createSquare(this.getGridX()-1,this.getGridY()+1));
+        moves.put("moveupright", sceneEntities.createSquare(this.getGridX()+1,this.getGridY()+1));
 
         // Piece logic here
         Array<Square> legalMove = new Array<>();

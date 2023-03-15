@@ -3,48 +3,44 @@ package com.mygdx.chess;
 import com.badlogic.gdx.utils.Array;
 
 /* tool to check the properties of a certain square */
-public class Square {
-    public int x,y;
-    private Array<Entity> entities;
-    public Square (Array<Entity> entities, int absoluteX, int absoluteY) {
-        this.x = absoluteX;
-        this.y = absoluteY;
-        this.entities = entities;
+public class Square extends BoardEntity {
+    private Array<ChessPiece> chessPieces;
+    public Square (SceneEntities sceneEntities, int gridX, int gridY, Array<BoardEntity> boardEntitiesCopy) {
+        super(sceneEntities, gridX, gridY);
+        this.chessPieces = new Array<>();
+        this.chessPieces = getFromSquare(getChessPieces(boardEntitiesCopy));
     }
 
-    public Square (Array<Entity> entities, int currentX, int currentY, int relativeX, int relativeY) {
-        this.x = currentX+relativeX;
-        this.y = currentY+relativeY;
-        this.entities = getEntitiesFromSquare(entities);
-    }
-
-    private Array<Entity> getEntitiesFromSquare (Array<Entity> entities) {
-        Array<Entity> squareEntities = new Array<>();
-        for (Entity entity : entities) {
-            if(entity.getX() == this.x && entity.getY() == this.y) squareEntities.add(entity);
-        }
-        return squareEntities;
-    }
-
-    private Array<ChessPiece> getChessPieces () {
+    private Array<ChessPiece> getChessPieces (Array<BoardEntity> entitiesCopy) {
         Array<ChessPiece> chessPieces = new Array<>();
-        for (Entity entity : entities) {
+        for (BoardEntity entity : entitiesCopy) {
             if (entity instanceof ChessPiece) chessPieces.add((ChessPiece) entity);
         }
         return chessPieces;
     }
-
-    public boolean isEmpty(){
-        return getChessPieces().isEmpty();
+    private Array<ChessPiece> getFromSquare (Array<ChessPiece> chessPieces) {
+        Array<ChessPiece> chessPiecesInSquare = new Array<>();
+        for (ChessPiece chessPiece : chessPieces) {
+            if(chessPiece.getGridX() == this.gridX && chessPiece.getGridY() == this.gridY) this.chessPieces.add(chessPiece);
+        }
+        return chessPiecesInSquare;
     }
     public ChessPiece getChessPiece () {
-        if(!getChessPieces().isEmpty()) return getChessPieces().first();
-        else return null;
+        if (!chessPieces.isEmpty()) {
+            return chessPieces.first();
+        } else {
+            return null;
+        }
     }
-
+    public boolean isEmpty(){
+        return chessPieces.isEmpty();
+    }
     private boolean isChessPieceColor (ChessPiece.Player color) {
-        if(!this.isEmpty() && this.getChessPiece().getPlayer() == color) return true;
-        else return false;
+        if (!isEmpty() && this.getChessPiece().getPlayer() == color) {
+            return true;
+        } else {
+            return false;
+        }
     }
     public boolean isChessPieceWhite () { return isChessPieceColor(ChessPiece.Player.WHITE); }
     public boolean isChessPieceBlack () { return isChessPieceColor(ChessPiece.Player.BLACK); }

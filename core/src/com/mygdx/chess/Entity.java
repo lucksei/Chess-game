@@ -54,9 +54,9 @@ public class Entity {
     public int getY () { return this.y; }
     public void setY (int y) { this.y = y; }
     public int getW () { return this.w; }
-    public void setW (int x) { this.w = w; }
+    public void setW (int w) { this.w = w; }
     public int getH () { return this.h; }
-    public void setH (int y) { this.h = h; }
+    public void setH (int h) { this.h = h; }
     public Rectangle getRect () {
         return this.rect;
     }

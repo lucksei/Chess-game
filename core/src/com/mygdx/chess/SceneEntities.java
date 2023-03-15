@@ -73,6 +73,16 @@ public class SceneEntities {
         Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
         return entitiesCopy;
     }
+
+    public Array<BoardEntity> getBoardEntitiesCopy () {
+        Array<Entity> entitiesCopy = new Array<>(this.entities);
+        Array<BoardEntity> boardEntities = new Array<>();
+        for (Entity entity : entitiesCopy) {
+            if (entity instanceof BoardEntity) boardEntities.add((BoardEntity) entity);
+        }
+        return boardEntities;
+    }
+
     public void createChessBoard() {
         ChessBoard chessBoard = new ChessBoard(this);
         addEntity(chessBoard);
@@ -85,7 +95,10 @@ public class SceneEntities {
         MoveIndicator moveIndicator = new MoveIndicator(this, gridX, gridY, parent);
         addEntity(moveIndicator);
     }
-    public void createSquare () {
+    public Square createSquare (int gridX, int gridY) {
+        Square square = new Square(this, gridX, gridY, getBoardEntitiesCopy());
+        addEntity(square);
+        return square;
 
     }
 

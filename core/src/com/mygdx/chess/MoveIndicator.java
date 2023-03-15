@@ -17,12 +17,12 @@ public class MoveIndicator extends BoardEntity {
     public void update () {
         super.update();
         if(isClicked()) {
-            Square currentSquare = new Square(sceneEntities.getEntitiesCopy(), this.getX(), this.getY(), 0, 0);
+            Square currentSquare = sceneEntities.createSquare(this.getGridX(), this.getGridY());
             if(!currentSquare.isEmpty() ) {
                 sceneEntities.removeEntity(currentSquare.getChessPiece());
             }
 
-            sceneEntities.movePiece(parent, getX(), getY());
+            sceneEntities.movePiece(parent, getGridX(), getGridY());
             sceneEntities.removeEntity(MoveIndicator.class);
         }
     }
