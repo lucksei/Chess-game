@@ -18,7 +18,23 @@ public class ChessScene {
         entitiesToRemove = new Array<>();
     }
 
-    private void addEntity (Entity entity) {
+    public void render () {
+        for (Entity entity : entities) {
+            entity.render();
+        }
+    }
+
+    public void update () {
+        for (Entity entity : entities) {
+            entity.update();
+        }
+        for (Entity entity : entitiesToRemove) {
+            entities.removeValue(entity,true);
+        }
+        entitiesToRemove.clear();
+    }
+
+    public void addEntity (Entity entity) {
         entities.add(entity);
     }
 
@@ -68,22 +84,6 @@ public class ChessScene {
     public void createMoveIndicator (ChessPiece chessPiece, int x, int y) {
         MoveIndicator moveIndicator = new MoveIndicator (game, chessPiece, x, y);
         addEntity(moveIndicator);
-    }
-
-    public void render () {
-        for (Entity entity : entities) {
-            entity.render();
-        }
-    }
-
-    public void update () {
-        for (Entity entity : entities) {
-            entity.update();
-        }
-        for (Entity entity : entitiesToRemove) {
-            entities.removeValue(entity,true);
-        }
-        entitiesToRemove.clear();
     }
 
     public void movePiece(Entity entity, int x, int y) {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -38,6 +39,8 @@ public class Chess extends ApplicationAdapter {
 		chessScene.createChessPiece(Type.PAWN, 2,1);
 		chessScene.createChessPiece(Type.PAWN, 3,1);
 		chessScene.createChessPiece(Type.BISHOP1, 2,2);
+		chessScene.addEntity(new UIEntity(this,100,100, 42, 42));
+		chessScene.addEntity(new UIEntity(this,100,200, 42, 42));
 	}
 
 	@Override
@@ -60,6 +63,7 @@ public class Chess extends ApplicationAdapter {
 		batch.draw(textureList.get(TextureList.Key.BOARD),0,0); // TODO move to ChessScene later
 		chessScene.render();
 		batch.end();
+
 
 	}
 	
