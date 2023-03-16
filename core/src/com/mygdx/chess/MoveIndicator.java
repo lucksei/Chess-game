@@ -6,25 +6,25 @@ public class MoveIndicator extends BoardEntity {
 
     ChessPiece parent;
 
-    public MoveIndicator(SceneEntities sceneEntities, int gridX, int gridY, ChessPiece parent) {
-        super(sceneEntities, gridX, gridY);
+    public MoveIndicator(Chess game, int gridX, int gridY, ChessPiece parent) {
+        super(game, gridX, gridY);
         this.setTag("moveIndicator");
         this.setClickeable(true);
         this.parent = parent;
-        this.setTexture(sceneEntities.textureList.get(TextureList.Key.INDICATOR));
+        this.setTexture(game.textureList.get(TextureList.Key.INDICATOR));
     }
     @Override
     public void update () {
         super.update();
         if(isClicked()) {
-            Square currentSquare = sceneEntities.createSquare(this.getGridX(), this.getGridY());
+            Square currentSquare = new Square(game, this.getGridX(), this.getGridY());
             if(!currentSquare.isEmpty() ) {
-                sceneEntities.removeEntity(currentSquare.getChessPiece());
+                game.sceneEntities.removeEntity(currentSquare.getChessPiece());
             }
 
-            sceneEntities.movePiece(parent, getGridX(), getGridY());
-            sceneEntities.removeEntity(MoveIndicator.class);
-            sceneEntities.removeEntity(Square.class);
+            game.sceneEntities.movePiece(parent, getGridX(), getGridY());
+            game.sceneEntities.removeEntity(MoveIndicator.class);
+            game.sceneEntities.removeEntity(Square.class);
         }
     }
 }

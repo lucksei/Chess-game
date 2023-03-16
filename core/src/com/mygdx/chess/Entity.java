@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Entity {
 
-    public SceneEntities sceneEntities;
+    public Chess game;
 
     private int x, y, w, h;
     private Rectangle rect = new Rectangle();
@@ -17,8 +17,8 @@ public class Entity {
     private boolean isClickeable;
     private boolean isDraggeable;
 
-    public Entity(SceneEntities sceneEntities) {
-        this.sceneEntities = sceneEntities;
+    public Entity(Chess game) {
+        this.game = game;
         this.x = 0;
         this.y = 0;
         this.w = 0;
@@ -27,16 +27,22 @@ public class Entity {
         this.isClickeable = false;
         this.isDraggeable = false;
         this.rect = new Rectangle();
-        this.texture = sceneEntities.textureList.get(TextureList.Key.ERR);
+        this.texture = game.textureList.get(TextureList.Key.ERR);
+        game.sceneEntities.addEntity(this);
     }
 
     public void render () {
-        sceneEntities.batch.draw(this.texture,this.x,this.y);
+        game.batch.draw(this.texture,this.x,this.y);
     }
     public void update () {} // override this function
+
+    public void remove () {
+        game.sceneEntities.removeEntity(this);
+    }
+
     public boolean isClicked () {
         this.setRect(); //updates where the rect is
-        if(this.isClickeable && Gdx.input.justTouched() && this.getRect().contains(sceneEntities.inputHandler.getMousePos().x,sceneEntities.inputHandler.getMousePos().y)) {
+        if(this.isClickeable && Gdx.input.justTouched() && this.getRect().contains(game.inputHandler.getMousePos().x,game.inputHandler.getMousePos().y)) {
             return true;
         }
         return false;

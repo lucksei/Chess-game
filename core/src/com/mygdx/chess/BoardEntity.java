@@ -5,9 +5,9 @@ public class BoardEntity extends Entity {
     static int SQUARE_SIZE = 42;
     int gridX, gridY;
 
-    public BoardEntity (SceneEntities sceneEntities, int gridX, int gridY) {
-        super(sceneEntities);
-        this.chessBoard = sceneEntities.chessBoard;
+    public BoardEntity (Chess game, int gridX, int gridY) {
+        super(game);
+        this.chessBoard = game.chessBoard;
         this.gridX = gridX;
         this.gridY = gridY;
         this.setW(SQUARE_SIZE);

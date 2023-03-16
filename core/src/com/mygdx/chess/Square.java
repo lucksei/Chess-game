@@ -5,10 +5,10 @@ import com.badlogic.gdx.utils.Array;
 /* tool to check the properties of a certain square */
 public class Square extends BoardEntity {
     private Array<ChessPiece> chessPieces;
-    public Square (SceneEntities sceneEntities, int gridX, int gridY, Array<BoardEntity> boardEntitiesCopy) {
-        super(sceneEntities, gridX, gridY);
+    public Square (Chess game, int gridX, int gridY) {
+        super(game, gridX, gridY);
         this.chessPieces = new Array<>();
-        this.chessPieces = getFromSquare(getChessPieces(boardEntitiesCopy));
+        this.chessPieces = getFromSquare(getChessPieces(game.sceneEntities.getBoardEntities()));
     }
 
     private Array<ChessPiece> getChessPieces (Array<BoardEntity> entitiesCopy) {

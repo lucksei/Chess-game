@@ -15,62 +15,62 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
     private Type type;
     private Player player;
 
-    public ChessPiece (SceneEntities sceneEntities, int gridX, int gridY, Type type) {
-        super(sceneEntities, gridX, gridY);
+    public ChessPiece (Chess game, int gridX, int gridY, Type type) {
+        super(game, gridX, gridY);
         setTag("chessPiece");
         this.type = type;
         setClickeable(true);
         switch (type) {
             case BISHOP:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.BISHOP));
+                setTexture(game.textureList.get(TextureList.Key.BISHOP));
                 this.player = Player.WHITE;
                 break;
             case BISHOP1:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.BISHOP1));
+                setTexture(game.textureList.get(TextureList.Key.BISHOP1));
                 this.player = Player.BLACK;
                 break;
             case KING:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.KING));
+                setTexture(game.textureList.get(TextureList.Key.KING));
                 this.player = Player.WHITE;
                 break;
             case KING1:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.KING1));
+                setTexture(game.textureList.get(TextureList.Key.KING1));
                 this.player = Player.BLACK;
                 break;
             case KNIGHT:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.KNIGHT));
+                setTexture(game.textureList.get(TextureList.Key.KNIGHT));
                 this.player = Player.WHITE;
                 break;
             case KNIGHT1:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.KNIGHT1));
+                setTexture(game.textureList.get(TextureList.Key.KNIGHT1));
                 this.player = Player.BLACK;
                 break;
             case PAWN:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.PAWN));
+                setTexture(game.textureList.get(TextureList.Key.PAWN));
                 this.player = Player.WHITE;
                 break;
             case PAWN1:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.PAWN1));
+                setTexture(game.textureList.get(TextureList.Key.PAWN1));
                 this.player = Player.BLACK;
                 break;
             case QUEEN:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.QUEEN));
+                setTexture(game.textureList.get(TextureList.Key.QUEEN));
                 this.player = Player.WHITE;
                 break;
             case QUEEN1:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.QUEEN1));
+                setTexture(game.textureList.get(TextureList.Key.QUEEN1));
                 this.player = Player.BLACK;
                 break;
             case ROOK:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.ROOK));
+                setTexture(game.textureList.get(TextureList.Key.ROOK));
                 this.player = Player.WHITE;
                 break;
             case ROOK1:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.ROOK1));
+                setTexture(game.textureList.get(TextureList.Key.ROOK1));
                 this.player = Player.BLACK;
                 break;
             default:
-                setTexture(sceneEntities.textureList.get(TextureList.Key.ERR));
+                setTexture(game.textureList.get(TextureList.Key.ERR));
                 this.player = Player.WHITE;
                 break;
         }
@@ -81,10 +81,10 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         if(isClicked()) {
             // activate so to speak, now this ChessPiece is the "active" one on the board, tell that to ChessScene
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
-            sceneEntities.removeEntity("moveIndicator");
+            game.sceneEntities.removeEntity("moveIndicator");
             // create indicators (where ChessScene lets me) to move the piece
             for (Square legalMove : new Array<Square>(movementStrategy())) {
-                sceneEntities.createMoveIndicator(this, legalMove.getGridX(), legalMove.getGridY());
+                new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
             }
 
             // if the piece deactivates for some reason it should remove its indicators
@@ -103,10 +103,10 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
     public Array<Square> movementStrategy () {
 
         Map<String, Square> moves = new HashMap<>();
-        moves.put("moveup", sceneEntities.createSquare(this.getGridX(),this.getGridY()+1));
-        moves.put("moveupup", sceneEntities.createSquare(this.getGridX(),this.getGridY()+2));
-        moves.put("moveupleft", sceneEntities.createSquare(this.getGridX()-1,this.getGridY()+1));
-        moves.put("moveupright", sceneEntities.createSquare(this.getGridX()+1,this.getGridY()+1));
+        moves.put("moveup", new Square(game, this.getGridX(),this.getGridY()+1));
+        moves.put("moveupup", new Square(game, this.getGridX(),this.getGridY()+2));
+        moves.put("moveupleft", new Square(game, this.getGridX()-1,this.getGridY()+1));
+        moves.put("moveupright", new Square(game, this.getGridX()+1,this.getGridY()+1));
 
         // Piece logic here
         Array<Square> legalMove = new Array<>();
@@ -128,7 +128,7 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         if (moves.get("moveupright").isChessPieceBlack()) {
             legalMove.add(moves.get("moveupright"));
         }
-        sceneEntities.removeEntity(Square.class);
+        game.sceneEntities.removeEntity(Square.class);
 
         return legalMove; //this might make the entities null in the squares so might trow error
     }

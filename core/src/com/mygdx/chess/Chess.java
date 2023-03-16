@@ -22,7 +22,8 @@ public class Chess extends ApplicationAdapter {
 	public TextureList textureList;
 	public InputHandler inputHandler;
 	public SceneEntities sceneEntities;
-	
+
+	ChessBoard chessBoard;
 	@Override
 	public void create () {
 
@@ -35,12 +36,14 @@ public class Chess extends ApplicationAdapter {
 
 		sceneEntities = new SceneEntities(this);
 
-		sceneEntities.createChessPiece(Type.PAWN, 1, 2);
-		sceneEntities.createChessPiece(Type.PAWN, 3, 4);
-		sceneEntities.createChessPiece(Type.PAWN, 2,1);
-		sceneEntities.createChessPiece(Type.PAWN, 3,1);
-		sceneEntities.createChessPiece(Type.BISHOP1, 2,2);
-		sceneEntities.createMoveIndicator(null, 6, 6);
+		// start of the game
+		chessBoard = new ChessBoard(this);
+		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN);
+		new ChessPiece(this, 3, 4, Type.PAWN);
+		new ChessPiece(this, 2, 1, Type.PAWN);
+		new ChessPiece(this, 3, 1, Type.PAWN);
+		new ChessPiece(this, 2, 2, Type.BISHOP1);
+		new MoveIndicator(this, 6, 6, asdf);
 //		chessScene.addEntity(new UIEntity(this,100,100, 42, 42));
 //		chessScene.addEntity(new UIEntity(this,100,200, 42, 42));
 	}
@@ -60,7 +63,6 @@ public class Chess extends ApplicationAdapter {
 		batch.draw(textureList.get(TextureList.Key.BOARD),0,0); // TODO move to ChessScene later
 		sceneEntities.render();
 		batch.end();
-
 
 	}
 	
