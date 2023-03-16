@@ -8,10 +8,10 @@ public class MoveIndicator extends BoardEntity {
 
     public MoveIndicator(SceneEntities sceneEntities, int gridX, int gridY, ChessPiece parent) {
         super(sceneEntities, gridX, gridY);
-        setTag("moveIndicator");
-        setClickeable(true);
+        this.setTag("moveIndicator");
+        this.setClickeable(true);
         this.parent = parent;
-        setTexture(sceneEntities.textureList.get(TextureList.Key.INDICATOR));
+        this.setTexture(sceneEntities.textureList.get(TextureList.Key.INDICATOR));
     }
     @Override
     public void update () {
@@ -24,6 +24,7 @@ public class MoveIndicator extends BoardEntity {
 
             sceneEntities.movePiece(parent, getGridX(), getGridY());
             sceneEntities.removeEntity(MoveIndicator.class);
+            sceneEntities.removeEntity(Square.class);
         }
     }
 }

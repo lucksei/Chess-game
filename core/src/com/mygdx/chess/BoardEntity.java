@@ -24,5 +24,5 @@ public class BoardEntity extends Entity {
     public int getGridX () { return this.gridX; }
     public void setGridX ( int gridX ) { this.gridX = gridX; }
     public int getGridY () { return this.gridY; }
-    public void setGridY ( int gridX ) { this.gridY = gridY; }
+    public void setGridY ( int gridY ) { this.gridY = gridY; }
 }

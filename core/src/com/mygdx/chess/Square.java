@@ -21,7 +21,7 @@ public class Square extends BoardEntity {
     private Array<ChessPiece> getFromSquare (Array<ChessPiece> chessPieces) {
         Array<ChessPiece> chessPiecesInSquare = new Array<>();
         for (ChessPiece chessPiece : chessPieces) {
-            if(chessPiece.getGridX() == this.gridX && chessPiece.getGridY() == this.gridY) this.chessPieces.add(chessPiece);
+            if(chessPiece.getGridX() == this.gridX && chessPiece.getGridY() == this.gridY) chessPiecesInSquare.add(chessPiece);
         }
         return chessPiecesInSquare;
     }

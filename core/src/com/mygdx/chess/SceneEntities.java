@@ -7,12 +7,10 @@ public class SceneEntities {
 
     private Array<Entity> entities;
     private Array<Entity> entitiesToRemove;
-
     private Chess game;
     public InputHandler inputHandler;
     public SpriteBatch batch;
     public TextureList textureList;
-
     ChessBoard chessBoard;
 
     public SceneEntities (Chess game) {
@@ -55,29 +53,29 @@ public class SceneEntities {
     }
     public Array<Entity> findEntities (String tag) {
         Array<Entity> entitiesFound = new Array<>();
-        for (Entity entity : this.getEntitiesCopy()) {
+        for (Entity entity : this.getEntities()) {
             if(entity.getTag() == tag) entitiesFound.add(entity);
         }
         return entitiesFound;
     }
     public <T extends Entity> Array<T> findEntities (Class<T> type) {
         Array<T> entitiesOfTypeFound = new Array<>();
-        for (Entity entity : this.getEntitiesCopy()) {
+        for (Entity entity : this.getEntities()) {
             if(type.isInstance(entity)) {
                 entitiesOfTypeFound.add(type.cast(entity));
             }
         }
         return entitiesOfTypeFound;
     }
-    public Array<Entity> getEntitiesCopy () {
+    public Array<Entity> getEntities () {
         Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
         return entitiesCopy;
     }
 
-    public Array<BoardEntity> getBoardEntitiesCopy () {
-        Array<Entity> entitiesCopy = new Array<>(this.entities);
+    public Array<BoardEntity> getBoardEntities() {
+//        Array<Entity> entitiesCopy = new Array<>(this.entities);
         Array<BoardEntity> boardEntities = new Array<>();
-        for (Entity entity : entitiesCopy) {
+        for (Entity entity : this.getEntities()) {
             if (entity instanceof BoardEntity) boardEntities.add((BoardEntity) entity);
         }
         return boardEntities;
@@ -96,7 +94,7 @@ public class SceneEntities {
         addEntity(moveIndicator);
     }
     public Square createSquare (int gridX, int gridY) {
-        Square square = new Square(this, gridX, gridY, getBoardEntitiesCopy());
+        Square square = new Square(this, gridX, gridY, getBoardEntities());
         addEntity(square);
         return square;
 

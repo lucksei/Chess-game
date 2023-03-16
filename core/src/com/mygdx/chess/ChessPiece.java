@@ -114,7 +114,7 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         if(moves.get("moveup").isEmpty()) { // is the next square empty?
             legalMove.add(moves.get("moveup"));
 
-            if(this.getY() == 1 && moves.get("moveupup").isEmpty() || moves.get("moveupup").isChessPieceBlack()) { //is this pawn at Y=3 and 2 squares ahead is empty or is there a black piece?
+            if(this.getGridY() == 1 && moves.get("moveupup").isEmpty() || moves.get("moveupup").isChessPieceBlack()) { //is this pawn at Y=3 and 2 squares ahead is empty or is there a black piece?
                 legalMove.add(moves.get("moveupup"));
 
             } else if (moves.get("moveup").isChessPieceBlack()) { // is the next square a black piece?
@@ -128,6 +128,8 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         if (moves.get("moveupright").isChessPieceBlack()) {
             legalMove.add(moves.get("moveupright"));
         }
+        sceneEntities.removeEntity(Square.class);
+
         return legalMove; //this might make the entities null in the squares so might trow error
     }
 }
