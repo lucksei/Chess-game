@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("Chess");
 		config.setResizable(false);
-		config.setWindowedMode(336,336);
+		config.setWindowedMode(42*8,42*9);
 		new Lwjgl3Application(new Chess(), config);
 	}
 }

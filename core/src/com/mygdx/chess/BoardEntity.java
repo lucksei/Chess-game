@@ -16,8 +16,8 @@ public class BoardEntity extends Entity {
     @Override
     public void update () {
         super.update();
-        this.setX(SQUARE_SIZE * this.gridX);
-        this.setY(SQUARE_SIZE * this.gridY);
+        this.setX(SQUARE_SIZE * this.gridX + chessBoard.getX());
+        this.setY(SQUARE_SIZE * this.gridY + chessBoard.getY());
     }
 
     // get and set methods

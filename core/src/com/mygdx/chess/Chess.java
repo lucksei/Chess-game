@@ -15,7 +15,7 @@ public class Chess extends ApplicationAdapter {
 
 	static final int SQUARE_SIZE = 42; //pixels
 	static final int WORLD_WIDTH = SQUARE_SIZE*8;
-	static final int WORLD_HEIGHT = SQUARE_SIZE*8;
+	static final int WORLD_HEIGHT = SQUARE_SIZE*9;
 
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
@@ -38,6 +38,7 @@ public class Chess extends ApplicationAdapter {
 
 		// start of the game
 		chessBoard = new ChessBoard(this);
+		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
 		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN);
 		new ChessPiece(this, 3, 4, Type.PAWN);
 		new ChessPiece(this, 2, 1, Type.PAWN);
@@ -60,7 +61,6 @@ public class Chess extends ApplicationAdapter {
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));
 		batch.begin();
-		batch.draw(textureList.get(TextureList.Key.BOARD),0,0); // TODO move to ChessScene later
 		sceneEntities.render();
 		batch.end();
 
