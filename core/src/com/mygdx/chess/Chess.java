@@ -14,8 +14,8 @@ import static com.mygdx.chess.ChessPiece.Type;
 public class Chess extends ApplicationAdapter {
 
 	static final int SQUARE_SIZE = 42; //pixels
-	static final int WORLD_WIDTH = SQUARE_SIZE*8;
-	static final int WORLD_HEIGHT = SQUARE_SIZE*9;
+	static final int WORLD_WIDTH = SQUARE_SIZE*10;
+	static final int WORLD_HEIGHT = SQUARE_SIZE*10;
 
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
@@ -38,13 +38,13 @@ public class Chess extends ApplicationAdapter {
 
 		// start of the game
 		chessBoard = new ChessBoard(this);
-		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
+//		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
 		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN);
 		new ChessPiece(this, 3, 4, Type.PAWN);
 		new ChessPiece(this, 2, 1, Type.PAWN);
 		new ChessPiece(this, 3, 1, Type.PAWN);
 		new ChessPiece(this, 2, 2, Type.BISHOP1);
-		new MoveIndicator(this, 6, 6, asdf);
+		new ChessPiece(this, 2, 6, Type.PAWN1);
 //		chessScene.addEntity(new UIEntity(this,100,100, 42, 42));
 //		chessScene.addEntity(new UIEntity(this,100,200, 42, 42));
 	}

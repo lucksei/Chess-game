@@ -1,13 +1,8 @@
 package com.mygdx.chess;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class ChessPiece extends BoardEntity implements MovementStrategy {
+public class ChessPiece extends BoardEntity {
 
     public enum Type { BISHOP, BISHOP1, KING, KING1, KNIGHT, KNIGHT1, PAWN, PAWN1, QUEEN, QUEEN1, ROOK, ROOK1 }
     public enum Player { WHITE, BLACK }
@@ -19,6 +14,7 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         super(game, gridX, gridY);
         setTag("chessPiece");
         this.type = type;
+
         setClickeable(true);
         switch (type) {
             case BISHOP:
@@ -81,9 +77,10 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
         if(isClicked()) {
             // activate so to speak, now this ChessPiece is the "active" one on the board, tell that to ChessScene
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
-            game.sceneEntities.removeEntity("moveIndicator");
+            game.sceneEntities.removeEntity(MoveIndicator.class);
             // create indicators (where ChessScene lets me) to move the piece
-            for (Square legalMove : new Array<Square>(movementStrategy())) {
+            Array<Square> legalMoves = MovementStrategy.getLegalMoves(game, this.gridX, this.gridY, getPlayer(), getType());
+            for (Square legalMove : legalMoves) {
                 new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
             }
 
@@ -92,44 +89,10 @@ public class ChessPiece extends BoardEntity implements MovementStrategy {
     }
 
     // get and set methods
-    public Type getPieceType(){
+    public Type getType(){
         return this.type;
     }
     public Player getPlayer(){
         return this.player;
-    }
-
-    // TODO muy tosco, arreglar
-    public Array<Square> movementStrategy () {
-
-        Map<String, Square> moves = new HashMap<>();
-        moves.put("moveup", new Square(game, this.getGridX(),this.getGridY()+1));
-        moves.put("moveupup", new Square(game, this.getGridX(),this.getGridY()+2));
-        moves.put("moveupleft", new Square(game, this.getGridX()-1,this.getGridY()+1));
-        moves.put("moveupright", new Square(game, this.getGridX()+1,this.getGridY()+1));
-
-        // Piece logic here
-        Array<Square> legalMove = new Array<>();
-
-        if(moves.get("moveup").isEmpty()) { // is the next square empty?
-            legalMove.add(moves.get("moveup"));
-
-            if(this.getGridY() == 1 && moves.get("moveupup").isEmpty() || moves.get("moveupup").isChessPieceBlack()) { //is this pawn at Y=3 and 2 squares ahead is empty or is there a black piece?
-                legalMove.add(moves.get("moveupup"));
-
-            } else if (moves.get("moveup").isChessPieceBlack()) { // is the next square a black piece?
-                legalMove.add(moves.get("moveup"));
-            }
-        }
-
-        if (moves.get("moveupleft").isChessPieceBlack()) {
-            legalMove.add(moves.get("moveupleft"));
-        }
-        if (moves.get("moveupright").isChessPieceBlack()) {
-            legalMove.add(moves.get("moveupright"));
-        }
-        game.sceneEntities.removeEntity(Square.class);
-
-        return legalMove; //this might make the entities null in the squares so might trow error
     }
 }

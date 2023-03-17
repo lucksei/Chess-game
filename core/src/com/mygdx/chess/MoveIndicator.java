@@ -22,7 +22,8 @@ public class MoveIndicator extends BoardEntity {
                 game.sceneEntities.removeEntity(currentSquare.getChessPiece());
             }
 
-            game.sceneEntities.movePiece(parent, getGridX(), getGridY());
+            parent.setGridX(this.gridX);
+            parent.setGridY(this.gridY);
             game.sceneEntities.removeEntity(MoveIndicator.class);
             game.sceneEntities.removeEntity(Square.class);
         }

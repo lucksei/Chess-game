@@ -35,13 +35,11 @@ public class Square extends BoardEntity {
     public boolean isEmpty(){
         return chessPieces.isEmpty();
     }
-    private boolean isChessPieceColor (ChessPiece.Player color) {
-        if (!isEmpty() && this.getChessPiece().getPlayer() == color) {
+    public boolean isEnemy (ChessPiece.Player color) {
+        if (!isEmpty() && this.getChessPiece().getPlayer() != color) {
             return true;
         } else {
             return false;
         }
     }
-    public boolean isChessPieceWhite () { return isChessPieceColor(ChessPiece.Player.WHITE); }
-    public boolean isChessPieceBlack () { return isChessPieceColor(ChessPiece.Player.BLACK); }
 }
