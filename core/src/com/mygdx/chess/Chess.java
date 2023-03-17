@@ -37,14 +37,16 @@ public class Chess extends ApplicationAdapter {
 		chessBoard = new EntityController(this, new Entity(this));
 		chessBoard.setTexture(textureList.get(TextureList.Key.BOARD));
 //		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
-		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN);
-		new ChessPiece(this, 3, 4, Type.PAWN);
-		new ChessPiece(this, 2, 1, Type.PAWN);
-		new ChessPiece(this, 3, 1, Type.PAWN);
-		new ChessPiece(this, 2, 2, Type.PAWN1);
-		new ChessPiece(this, 2, 6, Type.PAWN1);
-//		chessScene.addEntity(new UIEntity(this,100,100, 42, 42));
-//		chessScene.addEntity(new UIEntity(this,100,200, 42, 42));
+
+		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 3, 4, Type.QUEEN, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 2, 1, Type.PAWN, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 3, 1, Type.BISHOP, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 2, 2, Type.PAWN, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 2, 6, Type.PAWN, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 5, 6, Type.ROOK, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 7,7,Type.KING, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 7,0, Type.KNIGHT, ChessPiece.Player.BLACK);
 	}
 
 	@Override

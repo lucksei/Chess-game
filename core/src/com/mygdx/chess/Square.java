@@ -42,4 +42,11 @@ public class Square extends BoardEntity {
             return false;
         }
     }
+
+    public boolean isInBounds () {
+        if (this.getGridX() < 0 || this.getGridX() > 7 || this.getGridY() < 0 || this.getGridY() > 7) {
+            return false;
+        }
+        return true;
+    }
 }
