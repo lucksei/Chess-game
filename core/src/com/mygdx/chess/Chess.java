@@ -23,7 +23,7 @@ public class Chess extends ApplicationAdapter {
 	public InputHandler inputHandler;
 	public SceneEntities sceneEntities;
 
-	ChessBoard chessBoard;
+	EntityView chessBoard;
 	@Override
 	public void create () {
 
@@ -37,7 +37,8 @@ public class Chess extends ApplicationAdapter {
 		sceneEntities = new SceneEntities(this);
 
 		// start of the game
-		chessBoard = new ChessBoard(this);
+		chessBoard = new EntityView(this, new Entity(this));
+		chessBoard.setTexture(textureList.get(TextureList.Key.BOARD));
 //		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
 		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN);
 		new ChessPiece(this, 3, 4, Type.PAWN);

@@ -13,60 +13,61 @@ public class ChessPiece extends BoardEntity {
     public ChessPiece (Chess game, int gridX, int gridY, Type type) {
         super(game, gridX, gridY);
         setTag("chessPiece");
+        entityView = new EntityView(game, this);
         this.type = type;
 
-        setClickeable(true);
+        entityView.setClickeable(true);
         switch (type) {
             case BISHOP:
-                setTexture(game.textureList.get(TextureList.Key.BISHOP));
+                entityView.setTexture(game.textureList.get(TextureList.Key.BISHOP));
                 this.player = Player.WHITE;
                 break;
             case BISHOP1:
-                setTexture(game.textureList.get(TextureList.Key.BISHOP1));
+                entityView.setTexture(game.textureList.get(TextureList.Key.BISHOP1));
                 this.player = Player.BLACK;
                 break;
             case KING:
-                setTexture(game.textureList.get(TextureList.Key.KING));
+                entityView.setTexture(game.textureList.get(TextureList.Key.KING));
                 this.player = Player.WHITE;
                 break;
             case KING1:
-                setTexture(game.textureList.get(TextureList.Key.KING1));
+                entityView.setTexture(game.textureList.get(TextureList.Key.KING1));
                 this.player = Player.BLACK;
                 break;
             case KNIGHT:
-                setTexture(game.textureList.get(TextureList.Key.KNIGHT));
+                entityView.setTexture(game.textureList.get(TextureList.Key.KNIGHT));
                 this.player = Player.WHITE;
                 break;
             case KNIGHT1:
-                setTexture(game.textureList.get(TextureList.Key.KNIGHT1));
+                entityView.setTexture(game.textureList.get(TextureList.Key.KNIGHT1));
                 this.player = Player.BLACK;
                 break;
             case PAWN:
-                setTexture(game.textureList.get(TextureList.Key.PAWN));
+                entityView.setTexture(game.textureList.get(TextureList.Key.PAWN));
                 this.player = Player.WHITE;
                 break;
             case PAWN1:
-                setTexture(game.textureList.get(TextureList.Key.PAWN1));
+                entityView.setTexture(game.textureList.get(TextureList.Key.PAWN1));
                 this.player = Player.BLACK;
                 break;
             case QUEEN:
-                setTexture(game.textureList.get(TextureList.Key.QUEEN));
+                entityView.setTexture(game.textureList.get(TextureList.Key.QUEEN));
                 this.player = Player.WHITE;
                 break;
             case QUEEN1:
-                setTexture(game.textureList.get(TextureList.Key.QUEEN1));
+                entityView.setTexture(game.textureList.get(TextureList.Key.QUEEN1));
                 this.player = Player.BLACK;
                 break;
             case ROOK:
-                setTexture(game.textureList.get(TextureList.Key.ROOK));
+                entityView.setTexture(game.textureList.get(TextureList.Key.ROOK));
                 this.player = Player.WHITE;
                 break;
             case ROOK1:
-                setTexture(game.textureList.get(TextureList.Key.ROOK1));
+                entityView.setTexture(game.textureList.get(TextureList.Key.ROOK1));
                 this.player = Player.BLACK;
                 break;
             default:
-                setTexture(game.textureList.get(TextureList.Key.ERR));
+                entityView.setTexture(game.textureList.get(TextureList.Key.ERR));
                 this.player = Player.WHITE;
                 break;
         }
@@ -74,7 +75,7 @@ public class ChessPiece extends BoardEntity {
     @Override
     public void update () {
         super.update();
-        if(isClicked()) {
+        if(entityView.isClicked()) {
             // activate so to speak, now this ChessPiece is the "active" one on the board, tell that to ChessScene
             // tell ChessScene to delete any other indicators on the board (might have to use TAGS)
             game.sceneEntities.removeEntity(MoveIndicator.class);

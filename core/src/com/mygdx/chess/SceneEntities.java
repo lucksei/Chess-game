@@ -34,10 +34,14 @@ public class SceneEntities {
         entitiesToRemove.add(entity);
     }
     public void removeEntity (String tag) {
-        entitiesToRemove.addAll(findEntities(tag));
+        for (Entity entity : findEntities(tag)){
+            entity.remove();
+        }
     }
     public <T extends Entity> void removeEntity (Class<T> type) {
-        entitiesToRemove.addAll(findEntities(type));
+        for (Entity entity : findEntities(type)){
+            entity.remove();
+        }
     }
     public Array<Entity> findEntities (String tag) {
         Array<Entity> entitiesFound = new Array<>();

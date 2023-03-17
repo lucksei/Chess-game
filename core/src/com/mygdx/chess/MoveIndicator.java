@@ -3,23 +3,23 @@ package com.mygdx.chess;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MoveIndicator extends BoardEntity {
-
     ChessPiece parent;
 
     public MoveIndicator(Chess game, int gridX, int gridY, ChessPiece parent) {
         super(game, gridX, gridY);
-        this.setTag("moveIndicator");
-        this.setClickeable(true);
         this.parent = parent;
-        this.setTexture(game.textureList.get(TextureList.Key.INDICATOR));
+        this.setTag("moveIndicator");
+        entityView = new EntityView(game, this);
+        entityView.setClickeable(true);
+        entityView.setTexture(game.textureList.get(TextureList.Key.INDICATOR));
     }
     @Override
     public void update () {
         super.update();
-        if(isClicked()) {
+        if(entityView.isClicked()) {
             Square currentSquare = new Square(game, this.getGridX(), this.getGridY());
-            if(!currentSquare.isEmpty() ) {
-                game.sceneEntities.removeEntity(currentSquare.getChessPiece());
+            if(!currentSquare.isEmpty()) {
+                currentSquare.getChessPiece().remove();
             }
 
             parent.setGridX(this.gridX);
