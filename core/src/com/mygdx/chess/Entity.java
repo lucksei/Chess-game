@@ -1,19 +1,14 @@
 package com.mygdx.chess;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-
 public class Entity {
     public Chess game;
-    public EntityView entityView;
+    public EntityController entityController;
     private int x, y, w, h;
     private String tag;
 
     public Entity(Chess game) {
         this.game = game;
-        this.entityView = null;
+        this.entityController = null;
         game.sceneEntities.addEntity(this);
         this.x = 0;
         this.y = 0;
@@ -26,9 +21,9 @@ public class Entity {
     public void update () {} // override this function
 
     public void remove () {
-        game.sceneEntities.removeEntity(this);
-        if(entityView != null) {
-            entityView.remove();
+        game.sceneEntities.removeEntityFromScene(this);
+        if(entityController != null) {
+            entityController.remove();
         }
     }
 

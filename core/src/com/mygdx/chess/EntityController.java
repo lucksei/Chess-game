@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-public class EntityView extends Entity {
+public class EntityController extends Entity {
 
     private Entity parent;
     private Rectangle rect = new Rectangle();
@@ -12,7 +12,7 @@ public class EntityView extends Entity {
     private boolean isClickeable;
     private boolean isDraggeable;
 
-    public EntityView (Chess game, Entity parent) {
+    public EntityController(Chess game, Entity parent) {
         super(game);
         this.parent = parent;
         this.isClickeable = false;

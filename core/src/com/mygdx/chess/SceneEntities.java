@@ -30,7 +30,7 @@ public class SceneEntities {
     }
 
     public void addEntity (Entity entity) { entities.add(entity); }
-    public void removeEntity(Entity entity) {
+    public void removeEntityFromScene(Entity entity) {
         entitiesToRemove.add(entity);
     }
     public void removeEntity (String tag) {

@@ -1,7 +1,7 @@
 package com.mygdx.chess;
 
 public class BoardEntity extends Entity {
-    EntityView chessBoard;
+    EntityController chessBoard;
     static int SQUARE_SIZE = 42;
     int gridX, gridY;
 
