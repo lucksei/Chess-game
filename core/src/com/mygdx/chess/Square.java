@@ -42,11 +42,20 @@ public class Square extends BoardEntity {
             return false;
         }
     }
-
     public boolean isInBounds () {
         if (this.getGridX() < 0 || this.getGridX() > 7 || this.getGridY() < 0 || this.getGridY() > 7) {
             return false;
         }
         return true;
+    }
+    public boolean isUnderAttack (ChessPiece.Player color) {
+        for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
+            if (chessPiece.getPlayer() != color) {
+                for (Square square : chessPiece.getLegalMoves()) {
+                    if(square.getGridX() == this.gridX && square.getGridY() == this.gridY) return true;
+                }
+            }
+        }
+        return false;
     }
 }

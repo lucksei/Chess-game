@@ -75,9 +75,7 @@ public class ChessPiece extends BoardEntity {
                 // delete all other moves on the board
                 game.sceneEntities.removeEntity(MoveIndicator.class);
                 // create all possible legal moves
-                Array<Square> legalMoves = MovementStrategy.getLegalMoves(
-                        game, this.gridX, this.gridY, this.getPlayer(), this.getType());
-                for (Square legalMove : legalMoves) {
+                for (Square legalMove : this.getLegalMoves()) {
                     new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
                 }
             } else {
@@ -86,6 +84,9 @@ public class ChessPiece extends BoardEntity {
                 game.sceneEntities.removeEntity(MoveIndicator.class);
             }
         }
+    }
+    public Array<Square> getLegalMoves () {
+        return MovementStrategy.getLegalMoves(game, this.gridX, this.gridY, this.getPlayer(), this.getType());
     }
 
     // get and set methods

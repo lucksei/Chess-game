@@ -139,7 +139,13 @@ public class MovementStrategy {
         legalMoves.addAll(genericMovement(game, currentX, currentY, 1, 1, color,1)); // check up-right
         legalMoves.addAll(genericMovement(game, currentX, currentY, -1, -1, color,1)); // check down-left
         legalMoves.addAll(genericMovement(game, currentX, currentY, 1, -1, color,1)); // check down-right
-        return legalMoves;
+
+        // since the king cant be captured, this has to be searched
+        Array<Square> legalMovesNotUnderAttack = new Array<>();
+        for (Square legalMove : legalMoves) {
+            if (!legalMove.isUnderAttack(color)) legalMovesNotUnderAttack.add(legalMove);
+        }
+        return legalMovesNotUnderAttack;
     }
     public static Array<Square> genericMovement(Chess game, int currentX, int currentY, int dirX, int dirY, ChessPiece.Player color) {
         Array<Square> legalMoves = new Array<>();

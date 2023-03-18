@@ -11,12 +11,14 @@ public class EntityController extends Entity {
     private Texture texture;
     private boolean isClickeable;
     private boolean isDraggeable;
+    private boolean isDragging;
 
     public EntityController(Chess game, Entity parent) {
         super(game);
         this.parent = parent;
         this.isClickeable = false;
         this.isDraggeable = false;
+        this.isDragging = false;
         this.rect = new Rectangle();
         this.texture = game.textureList.get(TextureList.Key.ERR);
     }
@@ -24,10 +26,17 @@ public class EntityController extends Entity {
         game.batch.draw(this.texture,getX(),getY());
     }
     public void update () {
-        this.setX(parent.getX());
-        this.setY(parent.getY());
         this.setW(parent.getW());
         this.setH(parent.getH());
+
+        // move controller to mouse position
+        if (!this.isDragging()) {
+            this.setX(parent.getX());
+            this.setY(parent.getY());
+        } else {
+            this.setX((int) game.inputHandler.getMousePos().x + this.getW()/2);
+            this.setY((int) game.inputHandler.getMousePos().y + this.getH()/2);
+        }
     }
 
     public boolean isClicked () {
@@ -51,5 +60,6 @@ public class EntityController extends Entity {
     }
     public void setClickeable(boolean clickeable) { this.isClickeable = clickeable; }
     public void setDraggeable(boolean draggeable) { this.isDraggeable = draggeable; }
-
+    public boolean isDragging () { return this.isDragging; }
+    public void setDragging (boolean isDragging) { this.isDragging = isDragging; }
 }
