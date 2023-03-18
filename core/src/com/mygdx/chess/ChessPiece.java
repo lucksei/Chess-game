@@ -18,10 +18,11 @@ public class ChessPiece extends BoardEntity {
         setTag("chessPiece");
         entityController = new EntityController(game, this);
         entityController.setClickeable(true);
+        entityController.setDraggeable(true);
         this.type = type;
         this.player = player;
         isActive = false;
-        isTurn = false;
+        isTurn = true;
 
         switch (type) {
             case BISHOP:
@@ -67,7 +68,7 @@ public class ChessPiece extends BoardEntity {
     @Override
     public void update () {
         super.update();
-        if(entityController.isClicked()) {
+        if(entityController.isClicked() && this.isTurn()) {
             if (!this.isActive()) {
                 // deactivate any other piece and activate this one
                 for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);

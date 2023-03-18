@@ -2,6 +2,7 @@ package com.mygdx.chess;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class InputHandler {
@@ -16,6 +17,10 @@ public class InputHandler {
     }
 
     // get and set methods
-    public Vector3 getMousePos () { return this.mousePos; }
+//    public Vector3 getMousePos () { return this.mousePos; }
+
+    public Vector2 getMousePos () { return new Vector2(this.mousePos.x, this.mousePos.y); }
+
+//    public boolean getMouseTouchDown () { return Gdx.input.isTouched(); }
 
 }
