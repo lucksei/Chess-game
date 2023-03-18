@@ -22,7 +22,13 @@ public class BoardEntity extends Entity {
 
     // get and set methods
     public int getGridX () { return this.gridX; }
-    public void setGridX ( int gridX ) { this.gridX = gridX; }
+    public void setGridX ( int gridX ) {
+        this.gridX = gridX;
+        this.setX(SQUARE_SIZE * this.gridX + chessBoard.getX());
+    }
     public int getGridY () { return this.gridY; }
-    public void setGridY ( int gridY ) { this.gridY = gridY; }
+    public void setGridY ( int gridY ) {
+        this.gridY = gridY;
+        this.setY(SQUARE_SIZE * this.gridY + chessBoard.getY());
+    }
 }

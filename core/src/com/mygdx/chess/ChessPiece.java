@@ -85,6 +85,37 @@ public class ChessPiece extends BoardEntity {
                 game.sceneEntities.removeEntity(MoveIndicator.class);
             }
         }
+
+        if(entityController.startDragging() && this.isTurn()) {
+            // deactivate any other piece and activate this one
+            for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);
+            this.setActive(true);
+            // delete all other moves on the board
+            game.sceneEntities.removeEntity(MoveIndicator.class);
+            // create all possible legal moves
+            for (Square legalMove : this.getLegalMoves()) {
+                new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
+            }
+        }
+        if(entityController.endDragging() && this.isTurn()) {
+            setActive(false); // deactivate the piece
+//            parent.setGridX(this.gridX);
+//            parent.setGridY(this.gridY);
+            game.sceneEntities.removeEntity(MoveIndicator.class); //delete legal moves
+            // get square where the piece was dragged
+            int endPositionX = (int) ((this.entityController.getEndDraggingPosition().x)/SQUARE_SIZE);
+            int endPositionY = (int) ((this.entityController.getEndDraggingPosition().y)/SQUARE_SIZE);
+            // move it to the new square if there is a move indicator there
+            Square currentSquare = new Square(game,endPositionX,endPositionY);
+            if (currentSquare.hasMoveIndicator()) {
+                this.setGridX(endPositionX);
+                this.setGridY(endPositionY);
+                if(!currentSquare.isEmpty()) {
+                    currentSquare.getChessPiece().remove();
+                }
+            }
+        }
+
     }
     public Array<Square> getLegalMoves () {
         return MovementStrategy.getLegalMoves(game, this.gridX, this.gridY, this.getPlayer(), this.getType());

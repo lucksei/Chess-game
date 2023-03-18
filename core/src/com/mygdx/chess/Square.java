@@ -4,36 +4,36 @@ import com.badlogic.gdx.utils.Array;
 
 /* tool to check the properties of a certain square */
 public class Square extends BoardEntity {
-    private Array<ChessPiece> chessPieces;
+    private Array<BoardEntity> boardEntities;
     public Square (Chess game, int gridX, int gridY) {
         super(game, gridX, gridY);
-        this.chessPieces = new Array<>();
-        this.chessPieces = getFromSquare(getChessPieces(game.sceneEntities.getBoardEntities()));
+        this.boardEntities = new Array<>();
+        this.boardEntities = getFromSquare(game.sceneEntities.getBoardEntities());
     }
 
-    private Array<ChessPiece> getChessPieces (Array<BoardEntity> entitiesCopy) {
+    private Array<ChessPiece> getChessPieces (Array<BoardEntity> entities) {
         Array<ChessPiece> chessPieces = new Array<>();
-        for (BoardEntity entity : entitiesCopy) {
+        for (BoardEntity entity : entities) {
             if (entity instanceof ChessPiece) chessPieces.add((ChessPiece) entity);
         }
         return chessPieces;
     }
-    private Array<ChessPiece> getFromSquare (Array<ChessPiece> chessPieces) {
-        Array<ChessPiece> chessPiecesInSquare = new Array<>();
-        for (ChessPiece chessPiece : chessPieces) {
-            if(chessPiece.getGridX() == this.gridX && chessPiece.getGridY() == this.gridY) chessPiecesInSquare.add(chessPiece);
+    private Array<BoardEntity> getFromSquare (Array<BoardEntity> boardEntities) {
+        Array<BoardEntity> boardEntitiesInSquare = new Array<>();
+        for (BoardEntity boardEntity : boardEntities) {
+            if(boardEntity.getGridX() == this.gridX && boardEntity.getGridY() == this.gridY) boardEntitiesInSquare.add(boardEntity);
         }
-        return chessPiecesInSquare;
+        return boardEntitiesInSquare;
     }
     public ChessPiece getChessPiece () {
-        if (!chessPieces.isEmpty()) {
-            return chessPieces.first();
+        if (!getChessPieces(boardEntities).isEmpty()) {
+            return getChessPieces(boardEntities).first();
         } else {
             return null;
         }
     }
     public boolean isEmpty(){
-        return chessPieces.isEmpty();
+        return getChessPieces(boardEntities).isEmpty();
     }
     public boolean isEnemy (ChessPiece.Player color) {
         if (!isEmpty() && this.getChessPiece().getPlayer() != color) {
@@ -55,6 +55,12 @@ public class Square extends BoardEntity {
                     if(square.getGridX() == this.gridX && square.getGridY() == this.gridY) return true;
                 }
             }
+        }
+        return false;
+    }
+    public boolean hasMoveIndicator () {
+        for (BoardEntity entity : boardEntities) {
+            if (entity instanceof MoveIndicator) return true;
         }
         return false;
     }
