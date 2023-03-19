@@ -28,27 +28,15 @@ public class SceneEntities {
         }
         entitiesToRemove.clear();
     }
-
-    public void addEntity (Entity entity) { entities.add(entity); }
-    public void removeEntityFromScene(Entity entity) {
+    public void addEntityToScene (Entity entity) { entities.add(entity); }
+    public void removeEntityFromScene (Entity entity) {
         entitiesToRemove.add(entity);
     }
-    public void removeEntity (String tag) {
-        for (Entity entity : findEntities(tag)){
-            entity.remove();
-        }
-    }
-    public <T extends Entity> void removeEntity (Class<T> type) {
+    public <T extends Entity> void removeEntityFromScene(Class<T> type) {
         for (Entity entity : findEntities(type)){
+            entitiesToRemove.add(entity);
             entity.remove();
         }
-    }
-    public Array<Entity> findEntities (String tag) {
-        Array<Entity> entitiesFound = new Array<>();
-        for (Entity entity : this.getEntities()) {
-            if(entity.getTag() == tag) entitiesFound.add(entity);
-        }
-        return entitiesFound;
     }
     public <T extends Entity> Array<T> findEntities (Class<T> type) {
         Array<T> entitiesOfTypeFound = new Array<>();
@@ -59,24 +47,9 @@ public class SceneEntities {
         }
         return entitiesOfTypeFound;
     }
-    public Array<Entity> getEntities () {
+    private Array<Entity> getEntities () {
         Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
         return entitiesCopy;
     }
-
-    public Array<BoardEntity> getBoardEntities() {
-//        Array<Entity> entitiesCopy = new Array<>(this.entities);
-        Array<BoardEntity> boardEntities = new Array<>();
-        for (Entity entity : this.getEntities()) {
-            if (entity instanceof BoardEntity) boardEntities.add((BoardEntity) entity);
-        }
-        return boardEntities;
-    }
-
-    public void movePiece(BoardEntity boardEntity, int gridX, int gridY) {
-        boardEntity.setGridX(gridX);
-        boardEntity.setGridY(gridY);
-    }
-
 
 }

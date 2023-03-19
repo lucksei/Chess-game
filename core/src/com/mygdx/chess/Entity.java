@@ -4,17 +4,15 @@ public class Entity {
     public Chess game;
     public EntityController entityController;
     private int x, y, w, h;
-    private String tag;
 
     public Entity(Chess game) {
         this.game = game;
         this.entityController = null;
-        game.sceneEntities.addEntity(this);
+        game.sceneEntities.addEntityToScene(this);
         this.x = 0;
         this.y = 0;
         this.w = 0;
         this.h = 0;
-        this.tag = null;
     }
 
     public void render () {} // override this function
@@ -28,8 +26,6 @@ public class Entity {
     }
 
     // get and set methods
-    public String getTag () { return this.tag; }
-    public void setTag (String tag) { this.tag = tag; }
     public int getX () { return this.x; }
     public void setX (int x) { this.x = x; }
     public int getY () { return this.y; }
@@ -38,4 +34,5 @@ public class Entity {
     public void setW (int w) { this.w = w; }
     public int getH () { return this.h; }
     public void setH (int h) { this.h = h; }
+    public Chess getGame () { return this.game; }
 }

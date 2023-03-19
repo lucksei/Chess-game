@@ -8,7 +8,7 @@ public class Square extends BoardEntity {
     public Square (Chess game, int gridX, int gridY) {
         super(game, gridX, gridY);
         this.boardEntities = new Array<>();
-        this.boardEntities = getFromSquare(game.sceneEntities.getBoardEntities());
+        this.boardEntities = getFromSquare(game.sceneEntities.findEntities(BoardEntity.class));
     }
 
     private Array<ChessPiece> getChessPieces (Array<BoardEntity> entities) {

@@ -15,7 +15,6 @@ public class ChessPiece extends BoardEntity {
 
     public ChessPiece (Chess game, int gridX, int gridY, Type type, Player player) {
         super(game, gridX, gridY);
-        setTag("chessPiece");
         entityController = new EntityController(game, this);
         entityController.setClickeable(true);
         entityController.setDraggeable(true);
@@ -74,7 +73,7 @@ public class ChessPiece extends BoardEntity {
                 for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);
                 this.setActive(true);
                 // delete all other moves on the board
-                game.sceneEntities.removeEntity(MoveIndicator.class);
+                game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
                 // create all possible legal moves
                 for (Square legalMove : this.getLegalMoves()) {
                     new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
@@ -82,7 +81,7 @@ public class ChessPiece extends BoardEntity {
             } else {
                 // deactivate and delete legal moves
                 setActive(false);
-                game.sceneEntities.removeEntity(MoveIndicator.class);
+                game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
             }
         }
 
@@ -91,7 +90,7 @@ public class ChessPiece extends BoardEntity {
             for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);
             this.setActive(true);
             // delete all other moves on the board
-            game.sceneEntities.removeEntity(MoveIndicator.class);
+            game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
             // create all possible legal moves
             for (Square legalMove : this.getLegalMoves()) {
                 new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
@@ -101,24 +100,35 @@ public class ChessPiece extends BoardEntity {
             setActive(false); // deactivate the piece
 //            parent.setGridX(this.gridX);
 //            parent.setGridY(this.gridY);
-            game.sceneEntities.removeEntity(MoveIndicator.class); //delete legal moves
+            game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
             // get square where the piece was dragged
             int endPositionX = (int) ((this.entityController.getEndDraggingPosition().x)/SQUARE_SIZE);
             int endPositionY = (int) ((this.entityController.getEndDraggingPosition().y)/SQUARE_SIZE);
             // move it to the new square if there is a move indicator there
-            Square currentSquare = new Square(game,endPositionX,endPositionY);
-            if (currentSquare.hasMoveIndicator()) {
-                this.setGridX(endPositionX);
-                this.setGridY(endPositionY);
-                if(!currentSquare.isEmpty()) {
-                    currentSquare.getChessPiece().remove();
-                }
+            if (new Square(game,endPositionX,endPositionY).hasMoveIndicator()) {
+                movePiece(endPositionX, endPositionY);
             }
         }
 
     }
     public Array<Square> getLegalMoves () {
-        return MovementStrategy.getLegalMoves(game, this.gridX, this.gridY, this.getPlayer(), this.getType());
+        return MovementStrategy.getLegalMoves(this);
+    }
+    public void movePiece (int gridX, int gridY) {
+        // check if the move is also a capture move, in that case remove the enemy piece
+        Square currentSquare = new Square(game, gridX, gridY);
+        if(!currentSquare.isEmpty()) {
+            currentSquare.getChessPiece().remove();
+        }
+        currentSquare.remove();
+
+        // deactivate the piece and move it to the new square
+        setActive(false);
+        setGridX(gridX);
+        setGridY(gridY);
+        // remove this and all the other squares
+//        game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
+
     }
 
     // get and set methods
