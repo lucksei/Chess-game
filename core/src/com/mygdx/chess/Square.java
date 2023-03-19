@@ -7,8 +7,7 @@ public class Square extends BoardEntity {
     private Array<BoardEntity> boardEntities;
     public Square (Chess game, int gridX, int gridY) {
         super(game, gridX, gridY);
-        this.boardEntities = new Array<>();
-        this.boardEntities = getFromSquare(game.sceneEntities.findEntities(BoardEntity.class));
+        this.boardEntities = game.sceneEntities.getFromSquare(gridX, gridY);
     }
 
     private Array<ChessPiece> getChessPieces (Array<BoardEntity> entities) {
@@ -48,11 +47,11 @@ public class Square extends BoardEntity {
         }
         return true;
     }
-    public boolean isUnderAttack (ChessPiece.Player color) {
+    public boolean isUnderAttack (ChessPiece king) {
         for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
-            if (chessPiece.getPlayer() != color) {
-                for (Square square : chessPiece.getLegalMoves()) {
-                    if(square.getGridX() == this.gridX && square.getGridY() == this.gridY) return true;
+            if (chessPiece.getPlayer() != king.getPlayer()) {
+                for (Square square : chessPiece.getLegalMovesNoCheck()) {
+                    if(square.getGridX() == king.getGridX() && square.getGridY() == king.getGridY()) return true;
                 }
             }
         }

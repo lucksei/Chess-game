@@ -6,27 +6,48 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MovementStrategy {
-    public static Array<Square> getLegalMoves(ChessPiece chessPiece) {
+    public static Array<Square> getLegalMoves(ChessPiece chessPiece) { //, Array<ChessPiece> boardArrangement
+        Array<Square> legalMoves;
+
         switch(chessPiece.getType()){
             case BISHOP:
-                return bishopMovement(chessPiece);
+                legalMoves = bishopMovement(chessPiece);
+                break;
             case KING:
-                return kingMovement(chessPiece);
+                legalMoves = kingMovement(chessPiece);
+                break;
             case KNIGHT:
-                return knightMovement(chessPiece);
+                legalMoves = knightMovement(chessPiece);
+                break;
             case PAWN:
                 if(chessPiece.getPlayer() == ChessPiece.Player.WHITE)
-                    return whitePawnMovement(chessPiece);
+                    legalMoves = whitePawnMovement(chessPiece);
                 else
-                    return blackPawnMovement(chessPiece);
+                    legalMoves = blackPawnMovement(chessPiece);
+                break;
             case QUEEN:
-                return queenMovement(chessPiece);
+                legalMoves = queenMovement(chessPiece);
+                break;
             case ROOK:
-                return rookMovement(chessPiece);
+                legalMoves = rookMovement(chessPiece);
+                break;
             default:
-                return null;
+                legalMoves = null;
+                break;
         }
 
+        return legalMoves;
+
+    }
+    public static Array<Square> checkForCheckAlg (Array<Square> legalMoves, ChessPiece chessPiece, ChessPiece king) {
+        Array<Square> legalMovesNotUnderAttack = new Array<>();
+
+        for (Square legalMove : legalMoves) {
+            chessPiece.movePiece(legalMove.getGridX(), legalMove.getGridY());
+            if (!legalMove.isUnderAttack(king)) legalMovesNotUnderAttack.add(legalMove);
+            chessPiece.getGame().gameLogic.undo();
+        }
+        return legalMovesNotUnderAttack;
     }
     public static Array<Square> whitePawnMovement(ChessPiece chessPiece) {
 
@@ -138,13 +159,7 @@ public class MovementStrategy {
         legalMoves.addAll(genericMovement(chessPiece, 1, 1, 1)); // check up-right
         legalMoves.addAll(genericMovement(chessPiece, -1, -1, 1)); // check down-left
         legalMoves.addAll(genericMovement(chessPiece, 1, -1,1)); // check down-right
-
-        // since the king cant be captured, this has to be searched
-        Array<Square> legalMovesNotUnderAttack = new Array<>();
-        for (Square legalMove : legalMoves) {
-            if (!legalMove.isUnderAttack(chessPiece.getPlayer())) legalMovesNotUnderAttack.add(legalMove);
-        }
-        return legalMovesNotUnderAttack;
+        return legalMoves;
     }
     public static Array<Square> genericMovement(ChessPiece chessPiece, int dirX, int dirY) {
         Array<Square> legalMoves = new Array<>();

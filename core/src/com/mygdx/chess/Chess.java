@@ -1,6 +1,8 @@
 package com.mygdx.chess;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,8 +21,11 @@ public class Chess extends ApplicationAdapter {
 	public TextureList textureList;
 	public InputHandler inputHandler;
 	public SceneEntities sceneEntities;
+	public GameLogic gameLogic;
 
 	EntityController chessBoard;
+	public ChessPiece blackKing;
+	public ChessPiece whiteKing;
 	@Override
 	public void create () {
 
@@ -32,20 +37,22 @@ public class Chess extends ApplicationAdapter {
 		textureList = new TextureList();
 
 		sceneEntities = new SceneEntities(this);
+		gameLogic = new GameLogic(this);
 
 		// start of the game
 		chessBoard = new EntityController(this, new Entity(this));
 		chessBoard.setTexture(textureList.get(TextureList.Key.BOARD));
 //		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
 
-		ChessPiece asdf = new ChessPiece(this, 1, 2, Type.PAWN, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 1, 2, Type.PAWN, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 3, 4, Type.QUEEN, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 2, 1, Type.PAWN, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 3, 1, Type.BISHOP, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 2, 2, Type.PAWN, ChessPiece.Player.BLACK);
 		new ChessPiece(this, 2, 6, Type.PAWN, ChessPiece.Player.BLACK);
 		new ChessPiece(this, 5, 6, Type.ROOK, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 7,7,Type.KING, ChessPiece.Player.BLACK);
+		blackKing = new ChessPiece(this, 7,7,Type.KING, ChessPiece.Player.BLACK);
+		whiteKing = new ChessPiece(this, 0,7,Type.KING, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 7,0, Type.KNIGHT, ChessPiece.Player.BLACK);
 	}
 
@@ -57,6 +64,10 @@ public class Chess extends ApplicationAdapter {
 
 		inputHandler.update(camera);
 		sceneEntities.update();
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+			gameLogic.undo();
+		}
 
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));

@@ -112,22 +112,31 @@ public class ChessPiece extends BoardEntity {
 
     }
     public Array<Square> getLegalMoves () {
+        Array<Square> legalMoves = new Array<>();
+        legalMoves = MovementStrategy.getLegalMoves(this);
+        if(this.getPlayer() == Player.WHITE) return MovementStrategy.checkForCheckAlg(legalMoves, this, game.whiteKing);
+        if(this.getPlayer() == Player.BLACK) return MovementStrategy.checkForCheckAlg(legalMoves, this, game.blackKing);
+        return null;
+    }
+    public Array<Square> getLegalMovesNoCheck () {
         return MovementStrategy.getLegalMoves(this);
     }
     public void movePiece (int gridX, int gridY) {
+        Move move = new Move(game.gameLogic); // new entry on the move history log
+        move.setChessPiece(this); // log moved piece
+
         // check if the move is also a capture move, in that case remove the enemy piece
         Square currentSquare = new Square(game, gridX, gridY);
         if(!currentSquare.isEmpty()) {
+            move.setChessPieceCaptured(currentSquare.getChessPiece()); // log captured piece
             currentSquare.getChessPiece().remove();
         }
-        currentSquare.remove();
 
         // deactivate the piece and move it to the new square
         setActive(false);
         setGridX(gridX);
         setGridY(gridY);
-        // remove this and all the other squares
-//        game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
+        move.setNewPosition(this.getGridX(), this.getGridY()); // log new location
 
     }
 
