@@ -75,7 +75,7 @@ public class ChessPiece extends BoardEntity {
                 // delete all other moves on the board
                 game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
                 // create all possible legal moves
-                for (Square legalMove : this.getLegalMoves()) {
+                for (Square legalMove : this.getLegalMovesNoCheck()) { // TODO use the check for check method later
                     new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
                 }
             } else {
@@ -92,14 +92,12 @@ public class ChessPiece extends BoardEntity {
             // delete all other moves on the board
             game.sceneEntities.removeEntityFromScene(MoveIndicator.class);
             // create all possible legal moves
-            for (Square legalMove : this.getLegalMoves()) {
+            for (Square legalMove : this.getLegalMovesNoCheck()) { // TODO use the check for check method later
                 new MoveIndicator(game, legalMove.getGridX(), legalMove.getGridY(), this);
             }
         }
         if(entityController.endDragging() && this.isTurn()) {
             setActive(false); // deactivate the piece
-//            parent.setGridX(this.gridX);
-//            parent.setGridY(this.gridY);
             game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
             // get square where the piece was dragged
             int endPositionX = (int) ((this.entityController.getEndDraggingPosition().x)/SQUARE_SIZE);
@@ -114,21 +112,21 @@ public class ChessPiece extends BoardEntity {
     public Array<Square> getLegalMoves () {
         Array<Square> legalMoves = new Array<>();
         legalMoves = MovementStrategy.getLegalMoves(this);
-        if(this.getPlayer() == Player.WHITE) return MovementStrategy.checkForCheckAlg(legalMoves, this, game.whiteKing);
-        if(this.getPlayer() == Player.BLACK) return MovementStrategy.checkForCheckAlg(legalMoves, this, game.blackKing);
-        return null;
+        if(this.getPlayer() == Player.WHITE) return MovementStrategy.checkForCheckAlg(this, game.whiteKing, legalMoves, game.sceneEntities.findEntities(ChessPiece.class));
+        if(this.getPlayer() == Player.BLACK) return MovementStrategy.checkForCheckAlg(this, game.blackKing, legalMoves, game.sceneEntities.findEntities(ChessPiece.class));
+        return legalMoves;
     }
     public Array<Square> getLegalMovesNoCheck () {
         return MovementStrategy.getLegalMoves(this);
     }
     public void movePiece (int gridX, int gridY) {
-        Move move = new Move(game.gameLogic); // new entry on the move history log
-        move.setChessPiece(this); // log moved piece
+        MoveLog moveLog = new MoveLog(game.gameLogic); // new entry on the move history log
+        moveLog.setChessPiece(this); // log moved piece
 
         // check if the move is also a capture move, in that case remove the enemy piece
         Square currentSquare = new Square(game, gridX, gridY);
         if(!currentSquare.isEmpty()) {
-            move.setChessPieceCaptured(currentSquare.getChessPiece()); // log captured piece
+            moveLog.setChessPieceCaptured(currentSquare.getChessPiece()); // log captured piece
             currentSquare.getChessPiece().remove();
         }
 
@@ -136,7 +134,7 @@ public class ChessPiece extends BoardEntity {
         setActive(false);
         setGridX(gridX);
         setGridY(gridY);
-        move.setNewPosition(this.getGridX(), this.getGridY()); // log new location
+        moveLog.setNewPosition(this.getGridX(), this.getGridY()); // log new location
 
     }
 

@@ -1,11 +1,11 @@
 package com.mygdx.chess;
 
-public class Move {
+public class MoveLog {
 //    GameLogic gameLogic;
     private ChessPiece chessPiece, chessPieceCaptured;
     private int oldGridX, oldGridY, newGridX, newGridY;
 
-    public Move (GameLogic gameLogic) {
+    public MoveLog(GameLogic gameLogic) {
 //        this.gameLogic = gameLogic;
         gameLogic.logNewMove(this);
         this.chessPiece = null;

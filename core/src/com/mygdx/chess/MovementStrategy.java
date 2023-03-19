@@ -39,15 +39,17 @@ public class MovementStrategy {
         return legalMoves;
 
     }
-    public static Array<Square> checkForCheckAlg (Array<Square> legalMoves, ChessPiece chessPiece, ChessPiece king) {
-        Array<Square> legalMovesNotUnderAttack = new Array<>();
+    public static Array<Square> checkForCheckAlg (ChessPiece chessPiece, ChessPiece king, Array<Square> legalMoves, Array<ChessPiece> currentBoardState) {
+        Array<Square> legalMovesNotUnderCheck = new Array<>();
 
         for (Square legalMove : legalMoves) {
-            chessPiece.movePiece(legalMove.getGridX(), legalMove.getGridY());
-            if (!legalMove.isUnderAttack(king)) legalMovesNotUnderAttack.add(legalMove);
-            chessPiece.getGame().gameLogic.undo();
+//            chessPiece.movePiece(legalMove.getGridX(), legalMove.getGridY());
+//            if (!legalMove.isUnderAttack(king)) {
+//                legalMovesNotUnderCheck.add(legalMove);
+//            }
+//            chessPiece.getGame().gameLogic.undo();
         }
-        return legalMovesNotUnderAttack;
+        return legalMovesNotUnderCheck;
     }
     public static Array<Square> whitePawnMovement(ChessPiece chessPiece) {
 

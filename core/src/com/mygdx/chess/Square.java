@@ -4,10 +4,8 @@ import com.badlogic.gdx.utils.Array;
 
 /* tool to check the properties of a certain square */
 public class Square extends BoardEntity {
-    private Array<BoardEntity> boardEntities;
     public Square (Chess game, int gridX, int gridY) {
         super(game, gridX, gridY);
-        this.boardEntities = game.sceneEntities.getFromSquare(gridX, gridY);
     }
 
     private Array<ChessPiece> getChessPieces (Array<BoardEntity> entities) {
@@ -17,22 +15,14 @@ public class Square extends BoardEntity {
         }
         return chessPieces;
     }
-    private Array<BoardEntity> getFromSquare (Array<BoardEntity> boardEntities) {
-        Array<BoardEntity> boardEntitiesInSquare = new Array<>();
-        for (BoardEntity boardEntity : boardEntities) {
-            if(boardEntity.getGridX() == this.gridX && boardEntity.getGridY() == this.gridY) boardEntitiesInSquare.add(boardEntity);
-        }
-        return boardEntitiesInSquare;
+    private Array<BoardEntity> getBoardEntities () {
+        return game.sceneEntities.getFromSquare(gridX, gridY);
     }
     public ChessPiece getChessPiece () {
-        if (!getChessPieces(boardEntities).isEmpty()) {
-            return getChessPieces(boardEntities).first();
-        } else {
-            return null;
-        }
+        return getChessPieces(getBoardEntities()).first();
     }
     public boolean isEmpty(){
-        return getChessPieces(boardEntities).isEmpty();
+        return getChessPieces(getBoardEntities()).isEmpty();
     }
     public boolean isEnemy (ChessPiece.Player color) {
         if (!isEmpty() && this.getChessPiece().getPlayer() != color) {
@@ -51,14 +41,16 @@ public class Square extends BoardEntity {
         for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
             if (chessPiece.getPlayer() != king.getPlayer()) {
                 for (Square square : chessPiece.getLegalMovesNoCheck()) {
-                    if(square.getGridX() == king.getGridX() && square.getGridY() == king.getGridY()) return true;
+                    if(square.getGridX() == king.getGridX() && square.getGridY() == king.getGridY()) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
     public boolean hasMoveIndicator () {
-        for (BoardEntity entity : boardEntities) {
+        for (BoardEntity entity : getBoardEntities()) {
             if (entity instanceof MoveIndicator) return true;
         }
         return false;

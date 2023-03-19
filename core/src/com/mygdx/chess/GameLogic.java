@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class GameLogic {
     private Chess game;
-    private Array<Move> moveHistory;
+    private Array<MoveLog> moveHistory;
 
     public GameLogic (Chess game) {
         this.game = game;
@@ -16,11 +16,11 @@ public class GameLogic {
      */
     public void undo () {
         if(!moveHistory.isEmpty()) {
-            Move lastMove = moveHistory.get(moveHistory.size - 1);
-            lastMove.getChessPiece().setGridX(lastMove.getOldGridX());
-            lastMove.getChessPiece().setGridY(lastMove.getOldGridY());
-            if(lastMove.getChessPieceCaptured() != null) {
-                game.sceneEntities.addEntityToScene(lastMove.getChessPieceCaptured());
+            MoveLog lastMoveLog = moveHistory.get(moveHistory.size - 1);
+            lastMoveLog.getChessPiece().setGridX(lastMoveLog.getOldGridX());
+            lastMoveLog.getChessPiece().setGridY(lastMoveLog.getOldGridY());
+            if(lastMoveLog.getChessPieceCaptured() != null) {
+                game.sceneEntities.addEntityToScene(lastMoveLog.getChessPieceCaptured());
             }
             // Remove the last move from moveHistory
             moveHistory.removeIndex(moveHistory.size - 1);
@@ -32,7 +32,7 @@ public class GameLogic {
 
     }
 
-    public void logNewMove(Move move) {
-        this.moveHistory.add(move);
+    public void logNewMove(MoveLog moveLog) {
+        this.moveHistory.add(moveLog);
     }
 }

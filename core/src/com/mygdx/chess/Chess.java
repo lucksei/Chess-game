@@ -48,12 +48,12 @@ public class Chess extends ApplicationAdapter {
 		new ChessPiece(this, 3, 4, Type.QUEEN, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 2, 1, Type.PAWN, ChessPiece.Player.WHITE);
 		new ChessPiece(this, 3, 1, Type.BISHOP, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 2, 2, Type.PAWN, ChessPiece.Player.BLACK);
-		new ChessPiece(this, 2, 6, Type.PAWN, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 2, 2, Type.PAWN, ChessPiece.Player.BLACK).setTurn(false);
+		new ChessPiece(this, 2, 6, Type.PAWN, ChessPiece.Player.BLACK).setTurn(false);
 		new ChessPiece(this, 5, 6, Type.ROOK, ChessPiece.Player.WHITE);
 		blackKing = new ChessPiece(this, 7,7,Type.KING, ChessPiece.Player.BLACK);
 		whiteKing = new ChessPiece(this, 0,7,Type.KING, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 7,0, Type.KNIGHT, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 7,0, Type.KNIGHT, ChessPiece.Player.BLACK).setTurn(false);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class Chess extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
 		inputHandler.update(camera);
-		sceneEntities.update();
+//		sceneEntities.update();
 
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
 			gameLogic.undo();
@@ -72,7 +72,8 @@ public class Chess extends ApplicationAdapter {
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));
 		batch.begin();
-		sceneEntities.render();
+		sceneEntities.update();
+//		sceneEntities.render();
 		batch.end();
 
 	}
