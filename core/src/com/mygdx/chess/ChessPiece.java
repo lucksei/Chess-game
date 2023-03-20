@@ -85,7 +85,7 @@ public class ChessPiece extends BoardEntity {
             }
         }
 
-        if(entityController.startDragging() && this.isTurn()) {
+/*        if(entityController.startDragging() && this.isTurn()) {
             // deactivate any other piece and activate this one
             for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);
             this.setActive(true);
@@ -106,28 +106,36 @@ public class ChessPiece extends BoardEntity {
                 movePiece(endPositionX, endPositionY);
             }
             game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
-        }
+        }*/
 
     }
     public Array<Square> getLegalMoves () {
+/*
         Array<Square> legalMoves = new Array<>();
         legalMoves = MovementStrategy.getLegalMoves(this);
         if(this.getPlayer() == Player.WHITE) return MovementStrategy.checkForCheckAlg(this, game.whiteKing, legalMoves, game.sceneEntities.findEntities(ChessPiece.class));
         if(this.getPlayer() == Player.BLACK) return MovementStrategy.checkForCheckAlg(this, game.blackKing, legalMoves, game.sceneEntities.findEntities(ChessPiece.class));
         return legalMoves;
+*/
+        return null;
     }
     public Array<Square> getLegalMovesNoCheck () {
-        return MovementStrategy.getLegalMoves(this);
+        BoardState bs = new BoardState(this.game);
+        bs.copyCurrentState();
+        return GameLogic.getPieceMovement(bs,this);
     }
     public void movePiece (int gridX, int gridY) {
+        BoardState bs = new BoardState(this.game);
+        bs.copyCurrentState();
+
         MoveLog moveLog = new MoveLog(game.gameLogic); // new entry on the move history log
         moveLog.setChessPiece(this); // log moved piece
 
         // check if the move is also a capture move, in that case remove the enemy piece
-        Square currentSquare = new Square(game, gridX, gridY);
-        if(!currentSquare.isEmpty()) {
-            moveLog.setChessPieceCaptured(currentSquare.getChessPiece()); // log captured piece
-            currentSquare.getChessPiece().remove();
+        Square square = new Square(gridX, gridY);
+        if (!square.isEmpty(bs)) {
+            moveLog.setChessPieceCaptured(bs.getFromSquare(square).first()); // log captured piece
+            bs.getFromSquare(square).first().remove();
         }
 
         // deactivate the piece and move it to the new square

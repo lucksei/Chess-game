@@ -1,3 +1,4 @@
+/*
 package com.mygdx.chess;
 
 import com.badlogic.gdx.utils.Array;
@@ -39,17 +40,25 @@ public class MovementStrategy {
         return legalMoves;
 
     }
-    public static Array<Square> checkForCheckAlg (ChessPiece chessPiece, ChessPiece king, Array<Square> legalMoves, Array<ChessPiece> currentBoardState) {
+    public static Array<Square> checkForCheckAlg (ChessPiece chessPiece, ChessPiece king, Array<Square> legalMoves) {
+*/
+/*
+        // get current board state, dont include this piece, but create a copy of it
+        ChessPiece dummy = new ChessPiece(chessPiece.game, chessPiece.getGridX(), chessPiece.getGridY(), chessPiece.getType(), chessPiece.getPlayer());
+        Array<ChessPiece> currentBoardState  = new Array<>(chessPiece.game.sceneEntities.findEntities(ChessPiece.class));
+        // move the dummy piece to the legal move and check if king is under attack
         Array<Square> legalMovesNotUnderCheck = new Array<>();
 
         for (Square legalMove : legalMoves) {
-//            chessPiece.movePiece(legalMove.getGridX(), legalMove.getGridY());
-//            if (!legalMove.isUnderAttack(king)) {
-//                legalMovesNotUnderCheck.add(legalMove);
-//            }
-//            chessPiece.getGame().gameLogic.undo();
+            dummy.movePiece(legalMove.getGridX(), legalMove.getGridY());
+            if (!legalMove.isUnderAttack(dummy, currentBoardState)) {
+                legalMovesNotUnderCheck.add(legalMove);
+            }
+            chessPiece.game.gameLogic.undo();
         }
-        return legalMovesNotUnderCheck;
+*//*
+
+        return null;
     }
     public static Array<Square> whitePawnMovement(ChessPiece chessPiece) {
 
@@ -196,3 +205,4 @@ public class MovementStrategy {
     }
 }
 
+*/

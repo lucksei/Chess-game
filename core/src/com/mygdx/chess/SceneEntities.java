@@ -24,14 +24,6 @@ public class SceneEntities {
             entity.update();
             entity.render();
         }
-/*
-        for (Entity entity : entitiesToRemove) {
-            entities.removeValue(entity,true);
-        }
-        entitiesToRemove.clear();
-*/
-        for (Square square : findEntities(Square.class))
-            square.remove();
     }
     public void addEntityToScene (Entity entity) {
         entities.add(entity);

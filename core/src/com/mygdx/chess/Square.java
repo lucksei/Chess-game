@@ -3,29 +3,34 @@ package com.mygdx.chess;
 import com.badlogic.gdx.utils.Array;
 
 /* tool to check the properties of a certain square */
-public class Square extends BoardEntity {
-    public Square (Chess game, int gridX, int gridY) {
-        super(game, gridX, gridY);
+public class Square {
+    private int gridX, gridY;
+    public Square (int gridX, int gridY) {
+        this.gridX = gridX;
+        this.gridY = gridY;
     }
 
-    private Array<ChessPiece> getChessPieces (Array<BoardEntity> entities) {
-        Array<ChessPiece> chessPieces = new Array<>();
-        for (BoardEntity entity : entities) {
-            if (entity instanceof ChessPiece) chessPieces.add((ChessPiece) entity);
-        }
-        return chessPieces;
+    // set and get methods
+
+    public void setGridX(int gridX) {
+        this.gridX = gridX;
     }
-    private Array<BoardEntity> getBoardEntities () {
-        return game.sceneEntities.getFromSquare(gridX, gridY);
+    public int getGridX() {
+        return gridX;
     }
-    public ChessPiece getChessPiece () {
-        return getChessPieces(getBoardEntities()).first();
+    public void setGridY(int gridY) {
+        this.gridY = gridY;
     }
-    public boolean isEmpty(){
-        return getChessPieces(getBoardEntities()).isEmpty();
+    public int getGridY() {
+        return gridY;
     }
-    public boolean isEnemy (ChessPiece.Player color) {
-        if (!isEmpty() && this.getChessPiece().getPlayer() != color) {
+
+    public boolean isEmpty (BoardState boardState) {
+        return boardState.getFromSquare(this).isEmpty();
+    }
+    public boolean isEnemy (BoardState boardState, ChessPiece chessPiece) {
+        if (!boardState.getFromSquare(this).isEmpty() &&
+                chessPiece.getPlayer() != boardState.getFromSquare(this).first().getPlayer()) {
             return true;
         } else {
             return false;
@@ -37,7 +42,7 @@ public class Square extends BoardEntity {
         }
         return true;
     }
-    public boolean isUnderAttack (ChessPiece king) {
+/*    public boolean isUnderAttack (ChessPiece king) {
         for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
             if (chessPiece.getPlayer() != king.getPlayer()) {
                 for (Square square : chessPiece.getLegalMovesNoCheck()) {
@@ -48,12 +53,12 @@ public class Square extends BoardEntity {
             }
         }
         return false;
-    }
-    public boolean hasMoveIndicator () {
+    }*/
+/*    public boolean hasMoveIndicator () {
         Array<BoardEntity> temp = getBoardEntities();
         for (BoardEntity entity : temp) {
             if (entity instanceof MoveIndicator) return true;
         }
         return false;
-    }
+    }*/
 }
