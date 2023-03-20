@@ -98,14 +98,14 @@ public class ChessPiece extends BoardEntity {
         }
         if(entityController.endDragging() && this.isTurn()) {
             setActive(false); // deactivate the piece
-            game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
             // get square where the piece was dragged
-            int endPositionX = (int) ((this.entityController.getEndDraggingPosition().x)/SQUARE_SIZE);
-            int endPositionY = (int) ((this.entityController.getEndDraggingPosition().y)/SQUARE_SIZE);
+            int endPositionX = (int) ((this.entityController.getX() + chessBoard.getX() + SQUARE_SIZE/2)/SQUARE_SIZE);
+            int endPositionY = (int) ((this.entityController.getY() + chessBoard.getY() + SQUARE_SIZE/2)/SQUARE_SIZE);
             // move it to the new square if there is a move indicator there
             if (new Square(game,endPositionX,endPositionY).hasMoveIndicator()) {
                 movePiece(endPositionX, endPositionY);
             }
+            game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
         }
 
     }

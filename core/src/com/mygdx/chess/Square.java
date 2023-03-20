@@ -50,7 +50,8 @@ public class Square extends BoardEntity {
         return false;
     }
     public boolean hasMoveIndicator () {
-        for (BoardEntity entity : getBoardEntities()) {
+        Array<BoardEntity> temp = getBoardEntities();
+        for (BoardEntity entity : temp) {
             if (entity instanceof MoveIndicator) return true;
         }
         return false;
