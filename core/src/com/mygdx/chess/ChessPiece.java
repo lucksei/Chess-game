@@ -85,7 +85,7 @@ public class ChessPiece extends BoardEntity {
             }
         }
 
-/*        if(entityController.startDragging() && this.isTurn()) {
+        if(entityController.startDragging() && this.isTurn()) {
             // deactivate any other piece and activate this one
             for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);
             this.setActive(true);
@@ -102,11 +102,11 @@ public class ChessPiece extends BoardEntity {
             int endPositionX = (int) ((this.entityController.getX() + chessBoard.getX() + SQUARE_SIZE/2)/SQUARE_SIZE);
             int endPositionY = (int) ((this.entityController.getY() + chessBoard.getY() + SQUARE_SIZE/2)/SQUARE_SIZE);
             // move it to the new square if there is a move indicator there
-            if (new Square(game,endPositionX,endPositionY).hasMoveIndicator()) {
+            if (new Square(endPositionX,endPositionY).hasMoveIndicator(game.sceneEntities)) {
                 movePiece(endPositionX, endPositionY);
             }
             game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
-        }*/
+        }
 
     }
     public Array<Square> getLegalMoves () {
@@ -125,25 +125,12 @@ public class ChessPiece extends BoardEntity {
         return GameLogic.getPieceMovement(bs,this);
     }
     public void movePiece (int gridX, int gridY) {
-        BoardState bs = new BoardState(this.game);
-        bs.copyCurrentState();
-
-        MoveLog moveLog = new MoveLog(game.gameLogic); // new entry on the move history log
-        moveLog.setChessPiece(this); // log moved piece
-
-        // check if the move is also a capture move, in that case remove the enemy piece
-        Square square = new Square(gridX, gridY);
-        if (!square.isEmpty(bs)) {
-            moveLog.setChessPieceCaptured(bs.getFromSquare(square).first()); // log captured piece
-            bs.getFromSquare(square).first().remove();
-        }
-
         // deactivate the piece and move it to the new square
         setActive(false);
         setGridX(gridX);
         setGridY(gridY);
-        moveLog.setNewPosition(this.getGridX(), this.getGridY()); // log new location
-
+        game.gameLogic.capturePiece(game.gameLogic.getCurrentBoardState(), gridX, gridY);
+        game.gameLogic.updateCurrentBoardState();
     }
 
     // get and set methods

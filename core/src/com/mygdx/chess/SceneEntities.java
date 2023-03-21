@@ -47,18 +47,13 @@ public class SceneEntities {
         }
         return entitiesOfTypeFound;
     }
-    public Array<BoardEntity> getFromSquare (int gridX, int gridY) {
-        Array<BoardEntity> entitiesInSquare = new Array<>();
-        for (BoardEntity entity : findEntities(BoardEntity.class)) {
-            if(entity.getGridX() == gridX && entity.getGridY() == gridY) {
-                entitiesInSquare.add(entity);
-            }
-        }
-        return entitiesInSquare;
-    }
     private Array<Entity> getEntities () {
         Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
         return entitiesCopy;
+    }
+
+    public boolean contains (Entity entity) {
+        return entities.contains(entity, true);
     }
 
 }

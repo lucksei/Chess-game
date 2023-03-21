@@ -21,6 +21,33 @@ public class BoardState {
             boardState.put(original,dummy);
         }
     }
+    public void updateCurrentState () {
+        // removes old pieces and updates existing ones
+        Array<ChessPiece> toRemove = new Array<ChessPiece>();
+        for (ChessPiece original : boardState.keySet()) {
+            if (game.sceneEntities.contains(original)) {
+                boardState.get(original).setGridX(original.getGridX());
+                boardState.get(original).setGridY(original.getGridY());
+            } else {
+                toRemove.add(original);
+            }
+        }
+
+        // remove entities here
+        for (ChessPiece original : toRemove) {
+            boardState.remove(original);
+        }
+
+        // add new entry if there is a new chesspiece for some reason...
+        for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
+            if (!boardState.containsKey(chessPiece)) {
+                ChessPiece dummy = new ChessPiece(game, chessPiece.getGridX(), chessPiece.gridY, chessPiece.getType(), chessPiece.getPlayer());
+                dummy.remove();
+                boardState.put(chessPiece,dummy);
+            }
+        }
+
+    }
     public Array<ChessPiece> getFromSquare(Square square) {
         Array<ChessPiece> chessPieces = new Array<>();
         for (ChessPiece dummy : boardState.values()) {

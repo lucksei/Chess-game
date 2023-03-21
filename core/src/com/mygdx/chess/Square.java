@@ -28,6 +28,7 @@ public class Square {
     public boolean isEmpty (BoardState boardState) {
         return boardState.getFromSquare(this).isEmpty();
     }
+    // checks if the current square in a certain gamestate is an enemy to the current chess piece
     public boolean isEnemy (BoardState boardState, ChessPiece chessPiece) {
         if (!boardState.getFromSquare(this).isEmpty() &&
                 chessPiece.getPlayer() != boardState.getFromSquare(this).first().getPlayer()) {
@@ -54,11 +55,13 @@ public class Square {
         }
         return false;
     }*/
-/*    public boolean hasMoveIndicator () {
-        Array<BoardEntity> temp = getBoardEntities();
-        for (BoardEntity entity : temp) {
-            if (entity instanceof MoveIndicator) return true;
+    public boolean hasMoveIndicator (SceneEntities sceneEntities) {
+        Array<MoveIndicator> temp = sceneEntities.findEntities(MoveIndicator.class);
+        for (MoveIndicator moveIndicator : temp) {
+            if (moveIndicator.getGridX() == this.gridX && moveIndicator.getGridY() == this.gridY) {
+                return true;
+            }
         }
         return false;
-    }*/
+    }
 }
