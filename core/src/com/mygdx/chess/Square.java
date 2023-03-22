@@ -43,10 +43,10 @@ public class Square {
         }
         return true;
     }
-/*    public boolean isUnderAttack (ChessPiece king) {
-        for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
+    public boolean isUnderAttack (BoardState boardState, ChessPiece king) {
+        for (ChessPiece chessPiece : boardState.getPieces()) {
             if (chessPiece.getPlayer() != king.getPlayer()) {
-                for (Square square : chessPiece.getLegalMovesNoCheck()) {
+                for (Square square : GameLogic.getPieceMovement(boardState, chessPiece)) {
                     if(square.getGridX() == king.getGridX() && square.getGridY() == king.getGridY()) {
                         return true;
                     }
@@ -54,7 +54,7 @@ public class Square {
             }
         }
         return false;
-    }*/
+    }
     public boolean hasMoveIndicator (SceneEntities sceneEntities) {
         Array<MoveIndicator> temp = sceneEntities.findEntities(MoveIndicator.class);
         for (MoveIndicator moveIndicator : temp) {

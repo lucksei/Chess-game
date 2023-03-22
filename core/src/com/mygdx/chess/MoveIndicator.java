@@ -14,7 +14,7 @@ public class MoveIndicator extends BoardEntity {
     public void update () {
         super.update();
         if(entityController.isClicked()) {
-            parent.movePiece(this.getGridX(),this.getGridY());
+            parent.movePiece(game.gameLogic.getCurrentBoardState(), this.getGridX(),this.getGridY());
             parent.setActive(false);
             // remove this and all the other squares
             game.sceneEntities.removeEntityFromScene(MoveIndicator.class);

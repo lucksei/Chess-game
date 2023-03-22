@@ -103,7 +103,7 @@ public class ChessPiece extends BoardEntity {
             int endPositionY = (int) ((this.entityController.getY() + chessBoard.getY() + SQUARE_SIZE/2)/SQUARE_SIZE);
             // move it to the new square if there is a move indicator there
             if (new Square(endPositionX,endPositionY).hasMoveIndicator(game.sceneEntities)) {
-                movePiece(endPositionX, endPositionY);
+                movePiece(game.gameLogic.getCurrentBoardState(), endPositionX, endPositionY);
             }
             game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
         }
@@ -120,17 +120,14 @@ public class ChessPiece extends BoardEntity {
         return null;
     }
     public Array<Square> getLegalMovesNoCheck () {
-        BoardState bs = new BoardState(this.game);
-        bs.copyCurrentState();
-        return GameLogic.getPieceMovement(bs,this);
+        return game.gameLogic.checkForCheckAlg(this);
     }
-    public void movePiece (int gridX, int gridY) {
+    public void movePiece (BoardState boardState, int gridX, int gridY) {
         // deactivate the piece and move it to the new square
         setActive(false);
+        game.gameLogic.capturePiece(boardState, gridX, gridY);
         setGridX(gridX);
         setGridY(gridY);
-        game.gameLogic.capturePiece(game.gameLogic.getCurrentBoardState(), gridX, gridY);
-        game.gameLogic.updateCurrentBoardState();
     }
 
     // get and set methods

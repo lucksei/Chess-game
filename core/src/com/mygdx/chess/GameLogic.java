@@ -13,7 +13,7 @@ public class GameLogic {
     public GameLogic(Chess game) {
         this.game = game;
         moveHistory = new Array<>();
-        this.currentBoardState = new BoardState(game);
+        this.currentBoardState = new BoardState(game).storeCurrentState();
     }
 
     public void undo() {
@@ -36,25 +36,59 @@ public class GameLogic {
     public void capturePiece(BoardState boardState, int gridX, int gridY) {
         // check if the move is also a capture move, in that case remove the enemy piece
         Square square = new Square(gridX, gridY);
-        if (!square.isEmpty(boardState)) {
-            ChessPiece dummy = boardState.getFromSquare(square).first();
-            boardState.getOriginal(dummy).remove();
+        Array<ChessPiece> pieces = boardState.getFromSquare(square);
+        if (!pieces.isEmpty()) {
+            pieces.first().remove(); // remove it from the Scene Entities
+            boardState.remove(pieces.first()); // remove it from the board state
         }
+    }
+
+    // get and set methods
+
+    public BoardState getCurrentBoardState () {
+        return this.currentBoardState;
+    }
+    public void storeCurrentBoardState() {
+        this.currentBoardState.storeCurrentState();
+    }
+    public Array<Square> checkForCheckAlg (ChessPiece chessPiece) {
+        Array<Square> KingNotUnderAttack = new Array<>();
+
+        BoardState futureBoardState = new BoardState(game);
+        // for every possible move the piece has now...
+        for (Square legalMove : getPieceMovement(getCurrentBoardState(), chessPiece)) {
+            // create a copy of the board state and move dummy into the hypothetical square
+            futureBoardState.copyCurrentState(); // copy the current board state
+            ChessPiece dummy = futureBoardState.getFromSquare(new Square(chessPiece.getGridX(), chessPiece.getGridY())).first();
+            dummy.movePiece(futureBoardState, legalMove.getGridX(), legalMove.getGridY());
+            // check if the king square is under attack
+            if (!legalMove.isUnderAttack(futureBoardState, dummy)) {
+                KingNotUnderAttack.add(legalMove);
+            }
+
+        }
+        return KingNotUnderAttack;
     }
 
     // movement strategy TODO move this to his own class
 
     public static Array<Square> getPieceMovement(BoardState boardState, ChessPiece chessPiece) {
         switch (chessPiece.getType()) {
-            case BISHOP:
-                return bishopMovement(boardState, chessPiece);
             case PAWN:
                 if (chessPiece.getPlayer() == ChessPiece.Player.WHITE)
                     return whitePawnMovement(boardState, chessPiece);
                 else
-                    return whitePawnMovement(boardState, chessPiece);
+                    return blackPawnMovement(boardState, chessPiece);
+            case ROOK:
+                return rookMovement(boardState, chessPiece);
+            case KNIGHT:
+                return knightMovement(boardState, chessPiece);
+            case BISHOP:
+                return bishopMovement(boardState, chessPiece);
             case QUEEN:
                 return queenMovement(boardState, chessPiece);
+            case KING:
+                return kingMovement(boardState, chessPiece);
             default:
                 return kingMovement(boardState, chessPiece);
         }
@@ -88,7 +122,32 @@ public class GameLogic {
         return legalMoves;
     }
     public static Array<Square> blackPawnMovement(BoardState boardState, ChessPiece chessPiece) {
-        return  null;
+        Map<String, Square> moves = new HashMap<>();
+        moves.put("movedown", new Square(chessPiece.getGridX(), chessPiece.getGridY()-1));
+        moves.put("movedowndown", new Square(chessPiece.getGridX(), chessPiece.getGridY()-2));
+        moves.put("movedownleft", new Square(chessPiece.getGridX()-1,chessPiece.getGridY()-1));
+        moves.put("movedownright", new Square(chessPiece.getGridX()+1,chessPiece.getGridY()-1));
+
+        Array<Square> legalMoves = new Array<>();
+
+        // move one square up
+        if(moves.get("movedown").isInBounds() && moves.get("movedown").isEmpty(boardState)) {
+            legalMoves.add(moves.get("movedown"));
+
+            // move two squares up
+            if(chessPiece.getGridY() == 6 && moves.get("movedowndown").isEmpty(boardState)) {
+                legalMoves.add(moves.get("movedowndown"));
+            }
+        }
+        // capture moves
+        if (moves.get("movedownleft").isEnemy(boardState, chessPiece)) {
+            legalMoves.add(moves.get("movedownleft"));
+        }
+        if (moves.get("movedownright").isEnemy(boardState, chessPiece)) {
+            legalMoves.add(moves.get("movedownright"));
+        }
+
+        return legalMoves;
     }
     public static Array<Square> rookMovement(BoardState boardState, ChessPiece chessPiece) {
         Array<Square> legalMoves = new Array<>();
@@ -172,15 +231,6 @@ public class GameLogic {
             legalMoves.add(square);
         }
         return legalMoves;
-    }
-
-    // get and set methods
-
-    public BoardState getCurrentBoardState () {
-        return this.currentBoardState;
-    }
-    public void updateCurrentBoardState() {
-        currentBoardState.updateCurrentState();
     }
 }
 

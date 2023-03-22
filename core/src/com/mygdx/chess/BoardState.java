@@ -2,70 +2,48 @@ package com.mygdx.chess;
 
 import com.badlogic.gdx.utils.Array;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 public class BoardState {
     private Chess game;
-    private Map<ChessPiece, ChessPiece> boardState;
+    private Array<ChessPiece> boardStateArray;
 
     public BoardState (Chess game) {
         this.game = game;
-        this.boardState = new HashMap<>();
+        this.boardStateArray = new Array<>();
     }
-    public void copyCurrentState () {
-        for (ChessPiece original : this.game.sceneEntities.findEntities(ChessPiece.class)) {
-            ChessPiece dummy = new ChessPiece(game, original.getGridX(), original.gridY, original.getType(), original.getPlayer());
-            dummy.remove();
-            boardState.put(original,dummy);
+    public BoardState storeCurrentState() {
+        boardStateArray.clear();
+        for (ChessPiece chessPiece : this.game.sceneEntities.findEntities(ChessPiece.class)) {
+            boardStateArray.add(chessPiece);
         }
+        return this;
     }
-    public void updateCurrentState () {
-        // removes old pieces and updates existing ones
-        Array<ChessPiece> toRemove = new Array<ChessPiece>();
-        for (ChessPiece original : boardState.keySet()) {
-            if (game.sceneEntities.contains(original)) {
-                boardState.get(original).setGridX(original.getGridX());
-                boardState.get(original).setGridY(original.getGridY());
-            } else {
-                toRemove.add(original);
-            }
+    public BoardState copyCurrentState () {
+        boardStateArray.clear();
+        for (ChessPiece chessPiece : this.game.sceneEntities.findEntities(ChessPiece.class)) {
+            ChessPiece chessPieceCopy = new ChessPiece(game, chessPiece.getGridX(), chessPiece.gridY, chessPiece.getType(), chessPiece.getPlayer());
+            chessPieceCopy.remove();
+            boardStateArray.add(chessPieceCopy);
         }
-
-        // remove entities here
-        for (ChessPiece original : toRemove) {
-            boardState.remove(original);
+        return this;
+    }
+    public Array<ChessPiece> getPieces () {
+        Array<ChessPiece> chessPieces = new Array<>();
+        for (ChessPiece chessPiece : boardStateArray) {
+            chessPieces.add(chessPiece);
         }
-
-        // add new entry if there is a new chesspiece for some reason...
-        for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) {
-            if (!boardState.containsKey(chessPiece)) {
-                ChessPiece dummy = new ChessPiece(game, chessPiece.getGridX(), chessPiece.gridY, chessPiece.getType(), chessPiece.getPlayer());
-                dummy.remove();
-                boardState.put(chessPiece,dummy);
-            }
-        }
-
+        return chessPieces;
     }
     public Array<ChessPiece> getFromSquare(Square square) {
         Array<ChessPiece> chessPieces = new Array<>();
-        for (ChessPiece dummy : boardState.values()) {
-            if(dummy.getGridX() == square.getGridX() && dummy.getGridY() == square.getGridY()) {
-                chessPieces.add(dummy);
+        for (ChessPiece chessPiece : boardStateArray) {
+            if(chessPiece.getGridX() == square.getGridX() && chessPiece.getGridY() == square.getGridY()) {
+                chessPieces.add(chessPiece);
             }
         }
         return chessPieces;
     }
-    public ChessPiece getOriginal (ChessPiece dummy) {
-        for (Map.Entry<ChessPiece, ChessPiece> entry : boardState.entrySet()) {
-            if (Objects.equals(dummy, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-    public ChessPiece getDummy (ChessPiece original) {
-        return boardState.get(original);
+
+    public void remove(ChessPiece chessPiece) {
+        boardStateArray.removeValue(chessPiece,true);
     }
 }
