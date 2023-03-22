@@ -44,16 +44,32 @@ public class Chess extends ApplicationAdapter {
 		chessBoard.setTexture(textureList.get(TextureList.Key.BOARD));
 //		chessBoard.setY(WORLD_HEIGHT-SQUARE_SIZE*8);
 
-		new ChessPiece(this, 1, 2, Type.PAWN, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 3, 4, Type.QUEEN, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 2, 1, Type.PAWN, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 3, 1, Type.BISHOP, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 2, 2, Type.PAWN, ChessPiece.Player.BLACK).setTurn(false);
-		new ChessPiece(this, 2, 6, Type.PAWN, ChessPiece.Player.BLACK);
-		new ChessPiece(this, 5, 6, Type.ROOK, ChessPiece.Player.WHITE);
-		blackKing = new ChessPiece(this, 7,7,Type.KING, ChessPiece.Player.BLACK);
-		whiteKing = new ChessPiece(this, 0,7,Type.KING, ChessPiece.Player.WHITE);
-		new ChessPiece(this, 7,0, Type.KNIGHT, ChessPiece.Player.BLACK).setTurn(false);
+		new ChessPiece(this, 0, 0, Type.ROOK, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 1, 0, Type.KNIGHT, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 2, 0, Type.BISHOP, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 3, 0, Type.QUEEN, ChessPiece.Player.WHITE);
+		whiteKing = new ChessPiece(this, 4, 0, Type.KING, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 5, 0, Type.BISHOP, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 6, 0, Type.KNIGHT, ChessPiece.Player.WHITE);
+		new ChessPiece(this, 7, 0, Type.ROOK, ChessPiece.Player.WHITE);
+
+		for (int x = 0; x < 8; x++) {
+			new ChessPiece(this, x, 1, Type.PAWN, ChessPiece.Player.WHITE);
+		}
+
+		new ChessPiece(this, 0, 7, Type.ROOK, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 1, 7, Type.KNIGHT, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 2, 7, Type.BISHOP, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 3, 7, Type.QUEEN, ChessPiece.Player.BLACK);
+		blackKing = new ChessPiece(this, 4, 7, Type.KING, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 5, 7, Type.BISHOP, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 6, 7, Type.KNIGHT, ChessPiece.Player.BLACK);
+		new ChessPiece(this, 7, 7, Type.ROOK, ChessPiece.Player.BLACK);
+
+		for (int x = 0; x < 8; x++) {
+			new ChessPiece(this, x, 6, Type.PAWN, ChessPiece.Player.BLACK);
+		}
+
 		gameLogic.storeCurrentBoardState();
 	}
 
@@ -65,10 +81,6 @@ public class Chess extends ApplicationAdapter {
 
 		inputHandler.update(camera);
 //		sceneEntities.update();
-
-		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
-			gameLogic.undo();
-		}
 
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));

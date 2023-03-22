@@ -51,18 +51,19 @@ public class GameLogic {
     public void storeCurrentBoardState() {
         this.currentBoardState.storeCurrentState();
     }
-    public Array<Square> checkForCheckAlg (ChessPiece chessPiece) {
+    public Array<Square> checkForCheckAlg (ChessPiece chessPiece, ChessPiece king) {
         Array<Square> KingNotUnderAttack = new Array<>();
 
         BoardState futureBoardState = new BoardState(game);
         // for every possible move the piece has now...
         for (Square legalMove : getPieceMovement(getCurrentBoardState(), chessPiece)) {
-            // create a copy of the board state and move dummy into the hypothetical square
+            // create a copy of the board state and move the dummy piece into the hypothetical square
             futureBoardState.copyCurrentState(); // copy the current board state
             ChessPiece dummy = futureBoardState.getFromSquare(new Square(chessPiece.getGridX(), chessPiece.getGridY())).first();
+            ChessPiece dummyKing = futureBoardState.getFromSquare(new Square(king.getGridX(), king.getGridY())).first();
             dummy.movePiece(futureBoardState, legalMove.getGridX(), legalMove.getGridY());
             // check if the king square is under attack
-            if (!legalMove.isUnderAttack(futureBoardState, dummy)) {
+            if (!legalMove.isUnderAttack(futureBoardState, dummyKing)) {
                 KingNotUnderAttack.add(legalMove);
             }
 
