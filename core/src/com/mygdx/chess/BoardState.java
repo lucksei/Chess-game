@@ -33,15 +33,27 @@ public class BoardState {
         }
         return chessPieces;
     }
-    public Array<ChessPiece> getFromSquare(Square square) {
+    public Array<ChessPiece> getPieces (ChessPiece.Player color) {
+        Array<ChessPiece> chessPieces = new Array<>();
+        for (ChessPiece chessPiece : boardStateArray) {
+            if (chessPiece.getPlayer() == color)
+                chessPieces.add(chessPiece);
+        }
+        return chessPieces;
+    }
+    public ChessPiece getFromSquare(Square square) {
         Array<ChessPiece> chessPieces = new Array<>();
         for (ChessPiece chessPiece : boardStateArray) {
             if(chessPiece.getGridX() == square.getGridX() && chessPiece.getGridY() == square.getGridY()) {
                 chessPieces.add(chessPiece);
             }
         }
-        return chessPieces;
+        if(chessPieces.isEmpty())
+            return null;
+        else
+            return chessPieces.first();
     }
+
 
     public void remove(ChessPiece chessPiece) {
         boardStateArray.removeValue(chessPiece,true);

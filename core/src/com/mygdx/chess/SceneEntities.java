@@ -5,13 +5,11 @@ import com.badlogic.gdx.utils.Array;
 public class SceneEntities {
 
     private Array<Entity> entities;
-//    private Array<Entity> entitiesToRemove;
     private Chess game;
 
     public SceneEntities (Chess game) {
         this.game = game;
         entities = new Array<>();
-//        entitiesToRemove = new Array<>();
     }
 
     public void render () {
@@ -22,7 +20,6 @@ public class SceneEntities {
     public void update () {
         for (Entity entity : entities) {
             entity.update();
-            entity.render();
         }
     }
     public void addEntityToScene (Entity entity) {
@@ -31,7 +28,6 @@ public class SceneEntities {
     }
     public void removeEntityFromScene (Entity entity) {
         entities.removeValue(entity,true);
-//        entitiesToRemove.add(entity);
     }
     public <T extends Entity> void removeEntityFromScene(Class<T> type) {
         for (Entity entity : findEntities(type)){
@@ -48,7 +44,7 @@ public class SceneEntities {
         return entitiesOfTypeFound;
     }
     private Array<Entity> getEntities () {
-        Array<Entity> entitiesCopy = new Array<>(this.entities); // like using temp.addAll(objects);
+        Array<Entity> entitiesCopy = new Array<>(this.entities);
         return entitiesCopy;
     }
 

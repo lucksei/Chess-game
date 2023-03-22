@@ -26,12 +26,12 @@ public class Square {
     }
 
     public boolean isEmpty (BoardState boardState) {
-        return boardState.getFromSquare(this).isEmpty();
+        return (boardState.getFromSquare(this) == null);
     }
     // checks if the current square in a certain gamestate is an enemy to the current chess piece
     public boolean isEnemy (BoardState boardState, ChessPiece chessPiece) {
-        if (!boardState.getFromSquare(this).isEmpty() &&
-                chessPiece.getPlayer() != boardState.getFromSquare(this).first().getPlayer()) {
+        if (!this.isEmpty(boardState) &&
+                chessPiece.getPlayer() != boardState.getFromSquare(this).getPlayer()) {
             return true;
         } else {
             return false;
@@ -55,13 +55,25 @@ public class Square {
         }
         return false;
     }
-    public boolean hasMoveIndicator (SceneEntities sceneEntities) {
-        Array<MoveIndicator> temp = sceneEntities.findEntities(MoveIndicator.class);
-        for (MoveIndicator moveIndicator : temp) {
-            if (moveIndicator.getGridX() == this.gridX && moveIndicator.getGridY() == this.gridY) {
-                return true;
+    public boolean isUnderAttack (BoardState boardState, Square squareUnderAttack, ChessPiece.Player color) {
+        for (ChessPiece chessPiece : boardState.getPieces()) {
+            if (chessPiece.getPlayer() != color) {
+                for (Square square : GameLogic.getPieceMovement(boardState, chessPiece)) {
+                    if(square.getGridX() == squareUnderAttack.getGridX() && square.getGridY() == squareUnderAttack.getGridY()) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
+    }
+    public MoveIndicator hasMoveIndicator (SceneEntities sceneEntities) {
+        Array<MoveIndicator> temp = sceneEntities.findEntities(MoveIndicator.class);
+        for (MoveIndicator moveIndicator : temp) {
+            if (moveIndicator.getGridX() == this.gridX && moveIndicator.getGridY() == this.gridY) {
+                return moveIndicator;
+            }
+        }
+        return null;
     }
 }

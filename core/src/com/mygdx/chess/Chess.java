@@ -80,13 +80,12 @@ public class Chess extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
 		inputHandler.update(camera);
-//		sceneEntities.update();
+		sceneEntities.update();
 
 		// rendering stuff
 		ScreenUtils.clear(Color.valueOf("23272a"));
 		batch.begin();
-		sceneEntities.update();
-//		sceneEntities.render();
+		sceneEntities.render();
 		batch.end();
 
 	}
