@@ -43,6 +43,15 @@ public class GameLogic {
         } else {
             turn = ChessPiece.Player.WHITE;
         }
+        startTurn();
+
+        // check for check
+
+        // check for checkmate
+
+        // check for draw
+    }
+    public void startTurn() {
         for (ChessPiece chessPiece : currentBoardState.getPieces()) {
             chessPiece.setTurn(chessPiece.getPlayer() == turn);
         }

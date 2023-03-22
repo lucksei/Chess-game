@@ -13,8 +13,8 @@ import static com.mygdx.chess.ChessPiece.Type;
 public class Chess extends ApplicationAdapter {
 
 	static final int SQUARE_SIZE = 42; //pixels
-	static final int WORLD_WIDTH = SQUARE_SIZE*9;
-	static final int WORLD_HEIGHT = SQUARE_SIZE*9;
+	static final int WORLD_WIDTH = SQUARE_SIZE*8;
+	static final int WORLD_HEIGHT = SQUARE_SIZE*8;
 
 	public OrthographicCamera camera;
 	public SpriteBatch batch;
@@ -71,6 +71,7 @@ public class Chess extends ApplicationAdapter {
 		}
 
 		gameLogic.storeCurrentBoardState();
+		gameLogic.startTurn();
 	}
 
 	@Override

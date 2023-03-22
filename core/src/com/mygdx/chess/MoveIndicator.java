@@ -33,6 +33,7 @@ public class MoveIndicator extends BoardEntity {
         } else {
             parent.movePiece(this.getGridX(),this.getGridY());
         }
+        game.sceneEntities.removeEntityFromScene(MoveIndicator.class); //delete legal moves
     }
     public void setCastlingLeft (boolean castlingLeft) { this.isCastlingLeft = castlingLeft; }
     public void setCastlingRight (boolean castlingRight) { this.isCastlingRight = castlingRight; }

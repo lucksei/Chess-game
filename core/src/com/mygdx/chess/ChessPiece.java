@@ -69,7 +69,8 @@ public class ChessPiece extends BoardEntity {
     @Override
     public void update () {
         super.update();
-        if(entityController.isClicked() && this.isTurn()) {
+        // if its clicked and its its turn and there is no indicator on top of this piece
+        if(entityController.isClicked() && this.isTurn() && new Square(this.getGridX(),this.getGridY()).hasMoveIndicator(game.sceneEntities) == null) {
             if (!this.isActive()) {
                 // deactivate any other piece and activate this one
                 for (ChessPiece chessPiece : game.sceneEntities.findEntities(ChessPiece.class)) chessPiece.setActive(false);
@@ -94,7 +95,7 @@ public class ChessPiece extends BoardEntity {
             // get square where the piece was dragged
             int endPositionX = (int) ((this.entityController.getX() + chessBoard.getX() + SQUARE_SIZE/2)/SQUARE_SIZE);
             int endPositionY = (int) ((this.entityController.getY() + chessBoard.getY() + SQUARE_SIZE/2)/SQUARE_SIZE);
-            // move it to the new square if there is a move indicator there
+            // get move indicator on the place the piece was dragged and if there is one, activate it
             MoveIndicator moveIndicator = new Square(endPositionX,endPositionY).hasMoveIndicator(game.sceneEntities);
             if (moveIndicator != null) {
                 moveIndicator.activateIndicator();
