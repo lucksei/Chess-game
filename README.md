@@ -1,7 +1,7 @@
 # Chess game
 
 A very simple two-player chess game built using the libGDX game development
-framework. Big thanks to ChatGPT for helping me learn Java. *[Pixel Chess Pieces by Lucas312](https://opengameart.org/content/pixel-chess-pieces)*.
+framework. Credits to ChatGPT for helping me with learning Java. *[Pixel Chess Pieces by Lucas312](https://opengameart.org/content/pixel-chess-pieces)*.
 
 ## How to Play
 
