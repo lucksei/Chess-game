@@ -5,7 +5,7 @@ framework. Credits to ChatGPT for helping me with learning Java. *[Pixel Chess P
 
 ## How to Play
 
-To play the game, simply download the *[executable jar file](https://github.com/lucksei/Chess-game/releases/tag/v1.0)* and run it on your computer. Make sure you have Java installed on your system.
+To play the game, simply download the executable jar file *(https://github.com/lucksei/Chess-game/releases/tag/v1.0)* and run it on your computer. Make sure you have Java installed on your system.
 
 If you prefer to build the game from source, you can do so using the Gradle build tool. Simply run the following command from the project root directory:
 
